@@ -1,8 +1,8 @@
 # Database Hackathon
 
-
 ![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+[![build status](https://gitlab.com/sayederfanarefin/database_hackathon-2/badges/main/pipeline.svg)](https://gitlab.com/sayederfanarefin/database_hackathon-2/-/pipelines)
+
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 
 ![Hackathon](image.webp)
