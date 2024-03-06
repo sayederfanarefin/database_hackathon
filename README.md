@@ -5,7 +5,7 @@
 
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 
-![Hackathon](image.webp)
+<img src="image.webp" alt="Hackathon" width="150">
 
 ## Description
 
@@ -30,8 +30,8 @@ Follow these steps to get the application up and running on your local machine u
 First, clone this repository to your local machine:
 
 ```
-git clone https://github.com/yourusername/yourrepositoryname.git
-cd yourrepositoryname
+git clone https://github.com/sayederfanarefin/database_hackathon.git
+cd database_hackathon
 ```
 
 ### Step 2: Create a .env File
@@ -76,59 +76,21 @@ For stopping and removing containers, networks, and the default volumes attached
 docker-compose down -v
 ```
 
+## Entity Diagram
 
-
-
-![Entity Diagram](entityManagerFactory(EntityManagerFactoryBuilder).png)
+<img src="entityManagerFactory(EntityManagerFactoryBuilder).png" alt="Entity Diagram" width="350">
 
 ## How to Cite
 
 Please cite this work as follows:
 
-```bibtex
+```
 @misc{database_hackathon,
   author = {Sayed Erfan Arefin, Abdul Serwadda},
   title = {ntegrating Hackathons in Computer Science Education for Real-World Teamwork and Problem-Solving Skills},
   year = {2024},
   publisher = {GitHub},
   journal = {GitHub repository},
-  howpublished = {\url{https://github.com/yourusername/yourprojectname}}
+  howpublished = {\url{https://github.com/sayederfanarefin/database_hackathon}}
 }
-
-# Database Hackathon
-
-![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)
-[![build status](https://gitlab.com/sayederfanarefin/database_hackathon-2/badges/main/pipeline.svg)](https://gitlab.com/sayederfanarefin/database_hackathon-2/-/pipelines)
-
-![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
-
-![Hackathon](image.webp)
-
-## Description
-
-Brief description of your project.
-
-## Authors
-
-- Sayed Erfan Arefin
-- Abdul Serwadda
-
-
-
-
-
-![Entity Diagram](entityManagerFactory(EntityManagerFactoryBuilder).png)
-
-## How to Cite
-
-Please cite this work as follows:
-
-```bibtex
-@misc{database_hackathon,
-  author = {Sayed Erfan Arefin, Abdul Serwadda},
-  title = {ntegrating Hackathons in Computer Science Education for Real-World Teamwork and Problem-Solving Skills},
-  year = {2024},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/yourusername/yourprojectname}}
-}
+```
