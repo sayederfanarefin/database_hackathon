@@ -1,0 +1,44 @@
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install mysql-server -y
+
+sudo mysql
+CREATE USER 'erfan'@'localhost' IDENTIFIED BY 'TexasTech2243';
+GRANT ALL PRIVILEGES ON *.* TO 'erfan'@'localhost' WITH GRANT OPTION;
+CREATE USER 'erfan'@'%' IDENTIFIED BY 'TexasTech2243';
+GRANT ALL PRIVILEGES ON *.* TO 'erfan'@'%' WITH GRANT OPTION;
+
+exit;
+
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+## change bind-address and mysqlx-bind-address(if exists) to 0.0.0.0
+## ctrl+o to save everything
+## exit nano using ctrl+x 
+
+sudo systemctl restart mysql
+
+
+
+sudo useradd -m -d /opt/tomcat -U -s /bin/false tomcat
+sudo apt install default-jdk -y
+sudo apt install tomcat9 tomcat9-admin -y
+sudo ufw allow from any to any port 8080 proto tcp
+
+sudo nano /etc/tomcat9/tomcat-users.xml
+
+
+### paste these line right before the </tomcat-users>
+###<role rolename="admin-gui"/>
+
+###<role rolename="manager-gui"/>
+
+###<user username="erfan" password="TexasTechTomcat2243" roles="admin-gui,manager-gui"/>
+## ctrl+o to save everything
+## exit nano using ctrl+x 
+
+sudo systemctl restart tomcat9
+
+
+### http://10.131.57.134:8080/manager/html to deploy war files
+

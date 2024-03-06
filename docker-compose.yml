@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+    # build: .
+    image: registry.gitlab.com/sayederfanarefin/database_hackathon:prod-8080-latest
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - /var/www/html/upload-dir:/upload-dir
+      - /var/www/html/upload-dir-admin:/upload-dir-admin
+
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/98a789ad-552c-49a8-9b8b-618e377fae73
+      - SPRING_DATASOURCE_USERNAME=1ffdae3d-282d-47c1-9c3b-100b9c7358ec
+      - SPRING_DATASOURCE_PASSWORD=66bb26d3-552f-4e1c-b92d-a6e73ea7f9b5
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: 1ffdae3d-282d-47c1-9c3b-100b9c7358ec
+      MYSQL_PASSWORD: 66bb26d3-552f-4e1c-b92d-a6e73ea7f9b5
+      MYSQL_ROOT_PASSWORD: 66bb26d3-552f-4e1c-b92d-a6e73ea7f9b5
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
