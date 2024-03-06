@@ -1,0 +1,269 @@
+
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Create User Batch | Dashboard</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/app-assets/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/app-assets/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/app-assets/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/app-assets/site.webmanifest}">
+
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"/>
+
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/app-assets/css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="admin_sidebar :: admin_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="admin_navbar :: admin_navbar"></div>
+
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="modal" id="loadingModal" tabindex="-1" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Running... Please wait.</span>
+                                </div>
+                                <p>Running... Please wait.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card border-0 shadow rounded-3 my-5">
+<!--                <div class="card o-hidden border-0 shadow-lg my-5">-->
+<!--                    <div class="card-body p-0">-->
+                    <div class="card-header">Batch Creation</div>
+                    <div class="card-body p-4 p-sm-5">
+                        <div class="mb-3">
+                            You can create users from an excel file. You excel file should have the following columns. The header text can be anything. The header row will be ignored. The column sequences has to be exactly same as below. There are dummy data on the following table. For database names of each user a "hack_" will be added in the front automatically.
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>Team Name</th>
+                                    <th>Database Name</th>
+                                    <th>Database User Name</th>
+                                </thead>
+                                <tr>
+                                    <td>John</td>
+                                    <td>Doe</td>
+                                    <td>john@example.com</td>
+                                    <td>********</td>
+                                    <td>Team A</td>
+                                    <td>hack_Database1</td>
+                                    <td>user1</td>
+                                </tr>
+                                <tr>
+                                    <td>Jane</td>
+                                    <td>Smith</td>
+                                    <td>jane@example.com</td>
+                                    <td>********</td>
+                                    <td>Team B</td>
+                                    <td>hack_Database2</td>
+                                    <td>user2</td>
+                                </tr>
+                                <!-- Add more rows as needed -->
+                            </table>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="excelFileUpload" class="form-label">Choose Excel File</label>
+                            <input class="form-control" type="file" id="excelFileUpload" name="excelFileUpload" accept=".xls, .xlsx, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+
+                        </div>
+                        <div id="updateSuccess" class="col-sm-12 alert alert-success" style="display:none" >Batch User Creation Successful! You can see if there were any error below.</div>
+
+                    </div>
+
+
+
+
+                    <div class="card-footer">
+                        <button class="btn btn-primary btn-block" type="submit" onclick="createBatch()" >Create in Batch!</button>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow rounded-3 my-5" id = "resultCard" style="display: none">
+
+                    <div class="card-header">Batch Creation Results</div>
+                    <div class="card-body p-4 p-sm-5">
+                        <div class="mb-3">
+                <div class="row" style="padding: 14px;">
+
+                    <div class="col-10" id="viewdb">
+
+                        <div id="table-container"></div>
+
+                    </div>
+
+
+
+                </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<!--<script th:src="@{/app-assets/vendor/chart.js/Chart.min.js}"></script>-->
+
+<!--&lt;!&ndash; Page level custom scripts &ndash;&gt;-->
+<!--<script th:src="@{/app-assets/js/demo/chart-area-demo.js}"></script>-->
+<!--<script th:src="@{/app-assets/js/demo/chart-pie-demo.js}"></script>-->
+
+<script th:inline="javascript">
+    var serverContext = [[@{/}]];
+
+</script>
+
+<script>
+    async function createBatch() {
+
+        var loadingModal = document.getElementById("loadingModal");
+        loadingModal.style.display='block';
+
+        let formData = new FormData();
+        formData.append("excelFileUpload", excelFileUpload.files[0]);
+
+        let response = await fetch('/users/create/batch', {
+            method: "POST",
+            body: formData
+        });
+
+        const responseBody = await response.text();
+        const parsedData = JSON.parse(responseBody);
+
+
+        if (response.status == 200) {
+            loadingModal.style.display='none';
+
+            document.getElementById("updateSuccess").style.display = 'block';
+            console.log(parsedData);
+            setTimeout(() => {
+                afterReceivingCreateBatchResponse(parsedData);
+            }, 300);
+
+        }
+    }
+
+    function afterReceivingCreateBatchResponse(jsonData) {
+
+        var tableContainer = document.getElementById('table-container');
+        var resultCard = document.getElementById('resultCard');
+
+        resultCard.style.display='block';
+
+
+// Create the table element
+        var table = document.createElement("table");
+        table.setAttribute("border", "1");
+        table.setAttribute("class", "table table-hover");
+
+// Create the table header row
+        var headerRow = table.insertRow();
+        headerRow.innerHTML = "<th>First Name</th><th>Last Name</th><th>Email</th><th>Creation Notes</th><th>Created</th>";
+
+// Loop through the JSON data
+        jsonData.userBatchCreateItemDtoList.forEach(function (item) {
+            // Extract relevant data
+            var firstName = item.user.firstName || "";
+            var lastName = item.user.lastName || "";
+            var email = item.user.email || "";
+            var creationNotes = item.creationNotes || "";
+            var created = item.created ? "Yes" : "No";
+
+            // Create a new row and populate it with the data
+            var row = table.insertRow();
+            row.innerHTML = "<td>" + firstName + "</td><td>" + lastName + "</td><td>" + email + "</td><td>" + creationNotes + "</td><td>" + created + "</td>";
+        });
+
+// Append the table to the "table-container" div
+        tableContainer.appendChild(table);
+
+    }
+
+
+</script>
+</body>
+
+</html>

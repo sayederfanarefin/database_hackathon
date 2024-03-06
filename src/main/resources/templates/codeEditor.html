@@ -1,0 +1,416 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Task Submit</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/app-assets/css/bootstrap.min.css}" rel="stylesheet">
+
+    <link th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/app-assets/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link th:href="@{/app-assets/css/codeIdeStyles.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var taskId = /*[[${task.id}]]*/ 'default';
+    var hackID = /*[[${currentHack}]]*/ 'default';
+    console.log(taskId);
+    console.log(hackID);
+
+    /*]]>*/
+</script>
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="user_sidebar :: user_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <div class="modal" id="endHackModal" tabindex="-1" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+
+<!--                        <div class="spinner-border text-primary" role="status">-->
+<!--                            <span class="sr-only"></span>-->
+<!--                        </div>-->
+                        <div class="checkmark">
+                            <svg width="80" height="80"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="green">
+                                <path d="M0 0h24v24H0z" fill="none"/>
+                                <path fill="green" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </div>
+
+                        <h3>Hackathon Ended!</h3>
+                        <p>Redirecting... Please wait.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Modal -->
+        <div class="modal" id="loadingModal" tabindex="-1" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Running... Please wait.</span>
+                        </div>
+                        <p>Running... Please wait.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="user_navbar :: user_navbar"></div>
+
+
+            <div class="" style="padding: 0px;">
+                <div class="top-row" id="top-guy">
+                    <div class="pane" id="pane1">
+                        <!-- Content for pane1 -->
+                        <div class="editor-container">
+                            <div class="editor-header" style="padding-left: 16px;" th:text="${task.title}">
+
+                            </div>
+                            <div class="editor-body" style="min-height: 800px; padding: 16px; user-select: none; pointer-events: none;">
+                                <h6>Task Description:</h6>
+                                <p style="white-space: pre-line;" th:text="${task.description}"></p>
+                                <h6 th:if="${customDbDescription != null}">Database Details:</h6>
+
+                                <p style="white-space: pre-line;" th:text="${customDbDescription}"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider" id="middivider"></div>
+
+                    <div class="pane" id="pane2">
+                        <!-- Content for pane2 -->
+                        <div class="editor-container">
+                            <div class="editor-header" style="padding-left: 16px;">
+                                SQL editor
+                            </div>
+                            <div class="editor-body">
+                                <textarea id="code-editor" name="sql" spellcheck="false"
+                                          placeholder="Start typing statements here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="divider-horizontal" id="verdivider"  rel="popover"
+                     data-content="You can resize windows by dragging the divider."  data-placement="top"
+                     data-original-title="Window Resize"></div>
+                <div class="bottom-row" id="bottom-guy">
+                    <div class="pane" id="pane3">
+
+                        <div class="tabs" style="position: sticky;top: 0; background-color: antiquewhite; ">
+                            <button class="tab" id="tab1button" onclick="openTab('tab1')">Output</button>
+                            <button class="tab" id="tab2button" onclick="openTab('tab2')">Database</button>
+                            <button class="tab" id="tab3button" onclick="openTab('tab3')">Stats</button>
+
+                            <div style="position: absolute;right: 0px; margin-right: 25px;">
+
+
+                                <button class="btn btn-secondary custom-height-btn" id="clearButton">Clear</button>
+                                <button class="btn btn-primary custom-height-btn" onclick="submitCode()"
+                                        id="submitButton">Submit &raquo;
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div id="save_us_from_error">
+
+                            <div id="save_us_from_error_inner">
+                                <div class="tab-content" id="tab1">
+
+                                    <div id="terminal">
+        <!--                                <p>Hackathon> You will get all the outputs of your query here.</p>-->
+                                        <p id="secondaryStatusDisplay">Hackathon> You will get all the outputs of your query here.<br></p>
+                                        <p id="terminalCursor" style="margin-top: 0px;">Hackathon> <span class="blinking-cursor"><b>|</b></span></p>
+                                    </div>
+
+                                </div>
+                                <div class="tab-content" id="tab2" style="display: none;">
+
+                                    <div class="row" style="padding: 14px;">
+
+                                        <div class="col-10" id="viewdb">
+
+                                            <h5 id="dbNamePlace"
+                                                style="font-family: 'Courier New', monospace; font-size: 14px;"> Database
+                                                name: </h5>
+                                            <div id="user-db-table-body"></div>
+
+
+                                            <div id="table-container"></div>
+
+                                            <div id="table-container-schema-name"></div>
+                                            <div id="table-container-schema"></div>
+
+                                        </div>
+                                        <div class="col-2">
+                                            <button id= "dbReloadButton" type="button" class="btn btn-info btn-block  btn-sm" onclick="getUserDBInfo()"><i class="icon-refresh"></i> Reload DB Status</button>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="tab-content" id="tab3" style="display: none;">
+                                    <div class="row">
+
+                                        <div class="col-3" >
+                                            <div class="card custom-card" >
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Status</h5>
+        <!--                                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>-->
+                                                    <p class="card-text" id="taskStatusBottom">This task is incomplete.</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="card custom-card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Attempts</h5>
+                                                    <!--                                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>-->
+                                                    <p class="card-text" id="taskLeftBottom">You have 5/10 attempts left.</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="card custom-card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Overall progress</h5>
+                                                    <!--                                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>-->
+                                                    <p class="card-text" id="hackathonUserComplete" >You have completed 70% problems of the hackathon.</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="card custom-card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Average Attempts</h5>
+                                                    <!--                                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>-->
+                                                    <p class="card-text" id="averageAttempts">On an average everyone is taking 4/10 attempts.</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+<style>
+
+</style>
+
+
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<script th:inline="javascript">
+    // Access the customDbId value in JavaScript
+    var customDbId = /*[[${customDbId}]]*/ '';
+    var customDbName = /*[[${customDbName}]]*/ '';
+    console.log("customDbId: " + customDbId);
+
+    function redirectOnEnd(){
+        window.location.href = "/home";
+    }
+</script>
+
+<script th:src="@{/app-assets/js/codeEditor.js}"></script>
+
+<script th:inline="javascript">
+    var hackEndTimeThyme = /*[[${currentHackEndTime}]]*/ '';
+
+    if (hackEndTimeThyme != ''){
+        /* Get the current time in JavaScript */
+        var currentTime = new Date();
+
+        /* Get the value of currentHackEndTime from the Thymeleaf variable */
+        var currentHackEndTime = new Date(hackEndTimeThyme);
+        console.log("currentHackEndTime");
+        console.log(currentHackEndTime);
+        console.log("currentTime");
+        console.log(currentTime);
+
+        var timeUntilReload = currentHackEndTime - currentTime;
+        /* Reload the page after the calculated time has passed */
+        setTimeout(function () {
+                /* Redirect to the "/home" URL if currentHackEndTime has passed */
+            console.log("Redirecting..")
+
+
+            const endHackModal = document.getElementById('endHackModal');
+            endHackModal.style.display='block';
+
+            setTimeout(redirectOnEnd, 2000);
+
+
+        }, timeUntilReload);
+
+        /* Compare the current time with currentHackEndTime */
+
+    }
+</script>
+
+
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+<!--        let isResizing = false;-->
+<!--        let lastDownX;-->
+
+<!--        $('#topDivider').mousedown(function(e) {-->
+<!--            e.preventDefault();-->
+<!--            isResizing = true;-->
+<!--            lastDownX = e.clientX;-->
+<!--        });-->
+
+<!--        $(document).mousemove(function(e) {-->
+<!--            if (!isResizing) return;-->
+
+<!--            const $leftDiv = $('#leftTopDiv');-->
+<!--            const $rightDiv = $('#rightTopDiv');-->
+<!--            const offsetRight = $('.container').offset().left + $('.container').width();-->
+<!--            const diff = e.clientX - lastDownX;-->
+<!--            lastDownX = e.clientX;-->
+
+<!--            let newLeftWidth = $leftDiv.width() + diff;-->
+<!--            let newRightWidth = $rightDiv.width() - diff;-->
+
+<!--            if (newLeftWidth >= 150 && newRightWidth >= 150) {-->
+<!--                $leftDiv.width(newLeftWidth);-->
+<!--                $rightDiv.width(newRightWidth);-->
+<!--            }-->
+<!--        }).mouseup(function() {-->
+<!--            isResizing = false;-->
+<!--        });-->
+
+<!--        $('#middleDivider').mousedown(function(e) {-->
+<!--            e.preventDefault();-->
+<!--            isResizing = true;-->
+<!--            lastDownX = e.clientX;-->
+<!--        });-->
+
+<!--        $(document).mousemove(function(e) {-->
+<!--            if (!isResizing) return;-->
+
+<!--            const $topDiv = $('.topx');-->
+<!--            const $bottomDiv = $('#bottomDiv');-->
+<!--            const offsetTop = $('.container').offset().top + $topDiv.height();-->
+<!--            const diff = e.clientY - lastDownX;-->
+<!--            lastDownX = e.clientY;-->
+
+<!--            let newTopHeight = $topDiv.height() + diff;-->
+<!--            let newBottomHeight = $bottomDiv.height() - diff;-->
+
+<!--            if (newTopHeight >= 150 && newBottomHeight >= 150) {-->
+<!--                $topDiv.height(newTopHeight);-->
+<!--                $bottomDiv.height(newBottomHeight);-->
+<!--            }-->
+<!--        }).mouseup(function() {-->
+<!--            isResizing = false;-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+
+</body>
+
+</html>
+
+
+
+

@@ -1,0 +1,207 @@
+
+
+
+.editor-container {
+  margin-left: 4px ;
+  margin-right: 2px ;
+  /* max-width: 50vw; */
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  border: 1px solid #b6b4b4;
+
+}
+
+.editor-header {
+  position: sticky;
+  top: 0;
+  
+  padding: 10px;
+  background-color: #b9c8d9;
+  color: #004080;
+  font-size: 16px;
+  
+}
+
+.editor-body {
+  padding: 1px;
+}
+
+#code-editor {
+  font-family: 'Courier New', monospace;
+  width: 100%;
+  min-height: 800px;
+  resize: vertical;
+  border: 1px ; 
+  /* solid #ccc; */
+  font-size: 17px;
+  padding: 10px;
+  
+  outline: none;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+#code-editor::placeholder {
+  color: #999;
+}
+
+#code-editor:focus {
+  border-color: #007bff;
+
+}
+
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-row, .bottom-row {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.pane {
+  /* resize: both;
+  overflow: auto; */
+  /*flex: 1;*/
+  /*overflow: auto;*/
+
+}
+
+/* Set fixed heights for the panes */
+#pane1, #pane2 {
+  /*height: 60vh;*/
+  overflow: auto;
+}
+
+#pane1 {
+ 
+  margin-right: 2px;
+}
+
+#pane3 {
+  /*height: 30vh;*/
+  width: 100%;
+  overflow: scroll;
+  /*flex: 1;*/
+}
+
+#save_us_from_error{
+  /*padding-top: 50px;*/
+  position: relative;
+}
+
+
+
+#save_us_from_error_inner{
+
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+
+
+/* Sticky bottom row */
+.bottom-row {
+
+  position: sticky;
+  bottom: 0;
+}
+
+#viewdb {
+  font-family: 'Courier New', monospace;
+  width: 100%;
+  min-height: 800px;
+
+  /* border: 1px solid #0F0; */
+  padding: 10px;
+  overflow-x: scroll;
+  font-size: 13px;
+  overflow-y: hidden;
+}
+
+#terminal {
+  font-family: 'Courier New', monospace;
+  width: 100%;
+  min-height: 800px;
+  background-color: #000;
+  color: #0F0;
+  /* border: 1px solid #0F0; */
+  padding: 10px;
+  overflow-x: scroll;
+  font-size: 13px;
+  overflow-y: hidden;
+}
+
+
+@keyframes blink {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.blinking-cursor {
+  /*border: 1px solid black;*/
+  padding-right: 1px;
+  font-size: 13px;
+  animation: blink 0.9s infinite;
+}
+
+
+.tabs {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.tab {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+
+
+.custom-height-btn {
+  margin-top: 2px;
+  margin-right: 4px;
+  height: 32px;
+  padding: 0.1rem 2.5rem; 
+  
+}
+
+
+.divider {
+  width: 2px;
+  cursor: ew-resize;
+  background-color: #ccc;
+  
+}
+
+
+.divider-horizontal {
+  cursor: ns-resize;
+
+  width: 100%; /* Set the width to fill the entire available width */
+  height: 2px; /* Set the height of the horizontal line */
+  background-color: #ccc; /* Set the color of the horizontal line */
+  margin: 2px; /* Adjust the margin to control the spacing between elements */
+}
+
+.highlightedButton {
+  background-color: #a5c0fd; /* You can use any color for the highlight */
+}
+
+.tab-content{
+  overflow: hidden;
+}
+
+.custom-card{
+  width: 100%;
+  margin-top: 2px;
+  margin-left: 2px;
+}

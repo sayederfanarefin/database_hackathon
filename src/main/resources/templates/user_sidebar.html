@@ -1,0 +1,61 @@
+
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"
+    xmlns:th="http://www.thymeleaf.org" th:fragment="user_sidebar" >
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/home">
+        <div class="sidebar-brand-icon">
+            <!-- <i class="fas fa-laugh-wink"></i> -->
+            <i class="fas fa-database"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Hackathon</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+
+    <li class="nav-item" th:classappend="${pageTitle == 'Instructions' ? ' active' : ''}">
+        <a class="nav-link" th:href="@{/home}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Instructions</span></a>
+    </li>
+
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+<!--    <li class="nav-item" th:classappend="${pageTitle == 'Leader Board' ? ' active' : ''}">-->
+<!--        <a class="nav-link" th:href="@{/leaderboard}">-->
+<!--            <i class="fas fa-fw fa-tachometer-alt"></i>-->
+<!--            <span>Leader Board</span></a>-->
+<!--    </li>-->
+
+    <!-- Nav Item - Charts -->
+    <li class="nav-item" th:classappend="${pageTitle == 'Hackathon Tasks' ? ' active' : ''}">
+        <a class="nav-link" th:href="@{/tasks}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Hackathon Tasks</span></a>
+    </li>
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <li class="nav-item" th:classappend="${pageTitle == 'User Settings' ? ' active' : ''}">
+        <a class="nav-link" th:href="@{/settings}">
+            <i class="fas fa-fw fa-cogs"></i>
+            <span>User Settings</span></a>
+    </li>
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+
+</ul>
+<!-- End of Sidebar -->

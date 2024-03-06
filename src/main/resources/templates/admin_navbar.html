@@ -1,0 +1,40 @@
+<!-- Topbar -->
+
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+     xmlns:th="http://www.thymeleaf.org" th:fragment="admin_navbar">
+
+
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
+
+
+    <h1 class="d-none d-sm-inline-block mr-auto ml-md-3 my-2 my-md-0 mw-100 h4 text-gray-900 mb-4" th:text="${pageTitle}"></h1>
+
+
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+
+
+
+
+
+
+        <div class="topbar-divider d-none d-sm-block"></div>
+
+        <a class="dropdown-item" th:href="@{/logout}" th:utext="#{label.pages.logout}">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+        </a>
+
+
+
+
+    </ul>
+
+</nav>
+
+
+
+<!-- End of Topbar -->

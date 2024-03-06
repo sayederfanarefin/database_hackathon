@@ -1,0 +1,352 @@
+
+
+
+
+
+
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Server Load | Dashboard</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/app-assets/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/app-assets/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/app-assets/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/app-assets/site.webmanifest}">
+
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/app-assets/css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="admin_sidebar :: admin_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="admin_navbar :: admin_navbar"></div>
+
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+<!--                <div class="container mt-5">-->
+<!--                <h3 class="text-center">Resources</h3>-->
+
+                <div class="row">
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <canvas id="cpuChart" width="40" height="40"></canvas>
+                            </div>
+
+
+                            <div class="col-lg-4">
+                                <canvas id="memoryChart" width="40" height="40"></canvas>
+                            </div>
+
+
+                            <div class="col-lg-4">
+                                <canvas id="diskChart" width="40" height="40"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+                <h4 class="text-center">History</h4>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <canvas id="historyChart" width="800" height="250"></canvas>
+                    </div>
+                </div>
+
+
+                </div>
+
+
+<!--            </div>-->
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+<!--&lt;!&ndash; Page level plugins &ndash;&gt;-->
+<!--<script th:src="@{/app-assets/vendor/chart.js/Chart.min.js}"></script>-->
+
+<!--&lt;!&ndash; Page level custom scripts &ndash;&gt;-->
+<!--<script th:src="@{/app-assets/js/demo/chart-area-demo.js}"></script>-->
+<!--<script th:src="@{/app-assets/js/demo/chart-pie-demo.js}"></script>-->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+
+<script>
+
+    console.log("Hello world!");
+    var historyChart;
+
+    var labels = [];
+    var memoryData = [];
+    var cpuData = [];
+    var diskData = [];
+
+    var ctxMem = document.getElementById('memoryChart').getContext('2d')
+    var memoryChart = new Chart(ctxMem);
+
+    var ctxCpu = document.getElementById('cpuChart').getContext('2d')
+    var cpuChart = new Chart(ctxCpu);
+
+    var ctxDisk = document.getElementById('diskChart').getContext('2d')
+    var diskChart = new Chart(ctxDisk);
+
+    function updateMetrics() {
+        $.ajax({
+            url: "/metrics-data",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+
+                console.log(data);
+
+                if (memoryChart){
+
+                    console.log("destroying memoryChart");
+                    memoryChart.destroy();
+                }
+                 memoryChart = new Chart(ctxMem, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Used RAM', 'Free RAM'],
+                        datasets: [{
+                            data: [data.usedMemory, data.freeMemory],
+                            backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)']
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Memory Usage'
+                        },
+                        animation: {
+                            duration: 0
+                        }
+                    }
+                });
+                memoryChart.update();
+
+
+                if (cpuChart){
+                    cpuChart.destroy();
+                    console.log("destoying cpuChart")
+                }
+
+                cpuChart = new Chart(ctxCpu, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['CPU Usage', 'Idle Usage'],
+                        datasets: [{
+                            data: [data.cpuUsage, 100 - data.cpuUsage],
+                            backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)']
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'CPU Usage'
+                        },
+                        animation: {
+                            duration: 0
+                        }
+                    }
+                });
+                cpuChart.update();
+
+                if (diskChart){
+                    diskChart.destroy();
+                    console.log("destoying diskchart")
+                }
+
+                diskChart = new Chart(ctxDisk, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Used Space', 'Free Space'],
+                        datasets: [{
+                            data: [data.usedSpace, data.freeSpace],
+                            backgroundColor: ['rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)']
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'Disk Usage'
+                        },
+                        animation: {
+                            duration: 0
+                        }
+                    }
+                });
+
+                diskChart.update();
+
+
+                var currentTime = new Date().toLocaleTimeString();
+
+                labels.push(currentTime);
+                memoryData.push(data.usedMemory);
+                cpuData.push(data.cpuUsage);
+                diskData.push(data.usedSpace);
+
+                // Limit the number of data points displayed (e.g., show the last 10 data points)
+                var maxDataPoints = 10;
+                if (labels.length > maxDataPoints) {
+                    labels.shift();
+                    memoryData.shift();
+                    cpuData.shift();
+                    diskData.shift();
+                }
+
+
+                updateHistoryChart();
+            }
+        });
+    }
+
+    function updateHistoryChart() {
+        var historyCtx = document.getElementById('historyChart').getContext('2d');
+        if (historyChart) {
+            historyChart.destroy();
+        }
+        historyChart = new Chart(historyCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Used Memory (GB)',
+                        data: memoryData,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'CPU Usage (%)',
+                        data: cpuData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Used Space (GB)',
+                        data: diskData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1,
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                title: {
+                    display: true,
+                    text: 'Server Metrics History'
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return value + ' GB';
+                            }
+                        }
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        max: 100,
+                        position: 'right',
+                        ticks: {
+                            callback: function (value) {
+                                return value + ' %';
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    duration: 0
+                }
+            }
+        });
+        historyChart.update();
+
+    }
+
+    // Initial metrics update
+    updateMetrics();
+
+    // Periodic metrics update every 2 seconds
+    setInterval(function () {
+        updateMetrics();
+    }, 2000);
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+<div class="container-fluid" th:fragment="leader_board_additional_display" xmlns:th="http://www.thymeleaf.org">
+
+  <div >
+    <div class="row" th:if="${upcomingHackathon!=null}">
+
+      <div class="col-lg-8">
+
+        <!-- Collapsable Card Example -->
+        <div class="card shadow mb-4 border-left-warning" >
+
+          <div class="card-header">
+            Upcoming Hackathon
+          </div>
+          <div class="card-body">
+            <p style="white-space: pre-line;" id="upcomingHackathonStartTime" th:if="${upcomingHackathon != null}" th:text="${ 'Hackathon Starts at: ' + upcomingHackathon.startDateTime }"></p>
+            <p style="white-space: pre-line;"><i>The page should automatically refresh when Hackathon Starts. If not please reload the page.</i></p>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row" th:if="${upcomingHackathon==null}">
+
+      <div class="col-lg-8">
+
+        <!-- Collapsable Card Example -->
+        <div class="card shadow mb-4 border-left-danger" >
+
+          <div class="card-header">
+            Hackathon Status
+          </div>
+          <div class="card-body">
+            <p style="white-space: pre-line;"><i>No hackathon assigned yet!</i></p>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/jquery/jquery-3.2.1.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/bootstrap/js/popper.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/bootstrap/js/bootstrap.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/select2/select2.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/flipclock.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment-timezone.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment-timezone-with-data.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/countdowntime.js}"></script>
+  <script th:inline="javascript">
+
+    var leftHour = /*[[${timLeftHour}]]*/ 0;
+    var leftDay = /*[[${timLeftDay}]]*/ 0;
+    var leftMinute = /*[[${timLeftMin}]]*/ 0;
+    var leftSecond = /*[[${timLeftSec}]]*/ 0;
+    var leftYear = /*[[${timLeftYear}]]*/ 0;
+    var leftMonth = /*[[${timLeftMonth}]]*/ 0;
+    setClock(leftYear, leftMonth, leftDay, leftHour, leftMinute, leftSecond);
+
+  </script>
+
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/tilt/tilt.jquery.min.js}"></script>
+  <script>
+    $('.js-tilt').tilt({
+      scale: 1.1
+    })
+
+
+  </script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/js_timer/main.js}"></script>
+
+  <script>
+
+    var fanc = $('.cd100');
+    fanc.countdown100({
+      endtimeYear: 0,
+      endtimeMonth: 0,
+      endtimeDate: 0,
+      endtimeHours: 0,
+      endtimeMinutes: 0,
+      endtimeSeconds: 10,
+      timeZone: "",
+    });
+
+    function setClock(leftYear, leftMonth, leftDay, leftHour, leftMinute, leftSecond) {
+
+      fanc.countdown100({
+        endtimeYear: leftYear,
+        endtimeMonth: leftMonth,
+        endtimeDate: leftDay,
+        endtimeHours: leftHour,
+        endtimeMinutes: leftMinute,
+        endtimeSeconds: leftSecond,
+        timeZone: "",
+      });
+
+    }
+  </script>
+  <script>
+    function updateLeaderBoard() {
+      $.ajax({
+        url: "/leaderboard/rest",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          setClock(data.timLeftYear, data.timLeftMonth, data.timLeftDay,
+                  data.timLeftHour, data.timLeftMin, data.timLeftSec);
+
+          updateTable(data.data, data.activeUserId);
+
+        }
+      });
+    }
+
+
+    function updateTable(updatedList, activeUserId) {
+      // Clear the existing table rows
+      var tableBody = document.getElementById('table-body');
+
+      while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
+      }
+
+      // Rebuild the table with the updated data
+      updatedList.forEach(function (item) {
+        var row = document.createElement('tr');
+
+        if (activeUserId == item.userIdOriginal) {
+          row.setAttribute('class', 'table-active');
+        }
+
+        var idCell1 = document.createElement('td');
+
+        var nameDiv1 = document.createElement('div');
+        nameDiv1.setAttribute('class', 'd-flex align-items-baseline');
+        // nameDiv1.setAttribute('class', 'align-items-baseline');
+
+        var nameh4_1 = document.createElement('h4');
+        nameh4_1.setAttribute('class', 'mr-1');
+        nameh4_1.textContent = item.position;
+        nameDiv1.appendChild(nameh4_1);
+
+        idCell1.appendChild(nameDiv1);
+
+        row.appendChild(idCell1);
+
+        /// second col--------------------------------------------------
+
+        var idCell2 = document.createElement('td');
+
+        var nameDiv2 = document.createElement('div');
+        nameDiv2.setAttribute('class', 'd-flex align-items-center');
+
+        var imageElement = document.createElement('img');
+        imageElement.src = '/app-assets/css/dummy.png'; //item.imageUrl;
+        imageElement.setAttribute('class', 'circle-img circle-img--small mr-2');
+        imageElement.setAttribute('alt', 'User Img');
+
+        nameDiv2.appendChild(imageElement);
+
+        var nameDiv3 = document.createElement('div');
+        nameDiv3.setAttribute('class', 'user-info__basic');
+
+        var nameh5_2 = document.createElement('h5');
+        nameh5_2.setAttribute('class', 'mb-0');
+        nameh5_2.textContent = item.fulleName;
+        nameDiv3.appendChild(nameh5_2);
+
+
+        var p_2 = document.createElement('p');
+        p_2.setAttribute('class', 'text-muted mb-0');
+        p_2.textContent = item.teamName;
+        nameDiv3.appendChild(p_2);
+
+
+        nameDiv2.appendChild(nameDiv3);
+
+        row.appendChild(idCell2);
+
+
+        /// third col--------------------------------------------------
+
+
+        var idCell3 = document.createElement('td');
+
+        var nameDiv3 = document.createElement('div');
+        nameDiv3.setAttribute('class', 'd-flex align-items-baseline');
+        // nameDiv3.setAttribute('class', 'align-items-baseline');
+
+        var nameh4_3 = document.createElement('h4');
+        nameh4_3.setAttribute('class', 'mr-1');
+        nameh4_3.textContent = item.points;
+        nameDiv3.appendChild(nameh4_3);
+
+        idCell3.appendChild(nameDiv3);
+
+        row.appendChild(idCell3);
+
+        tableBody.appendChild(row);
+
+
+      });
+    }
+
+
+    // Initial metrics update
+    updateLeaderBoard();
+
+    // Periodic metrics update every 2 seconds
+    setInterval(function () {
+      updateLeaderBoard();
+    }, 2000);
+
+
+
+    const fullscreenButton = document.getElementById('fullscreen-button');
+    const container = document.getElementById('containerxxx');
+
+    fullscreenButton.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        container.requestFullscreen();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      container.classList.toggle('fullscreen', !!document.fullscreenElement);
+    });
+
+
+  </script>
+
+
+
+<!--  <script>-->
+<!--    window.addEventListener('load', function () {-->
+<!--      // Get a reference to the dynamically generated div-->
+<!--      var dynamicDiv = document.getElementById('centeredDivx');-->
+
+<!--      // Calculate the left margin or translateX value to center the div-->
+<!--      var containerWidth = document.getElementById('containerxxx').offsetWidth;-->
+<!--      var divWidth = dynamicDiv.offsetWidth;-->
+<!--      var marginLeft = (containerWidth - divWidth) / 4;-->
+
+<!--      // Apply the margin or translateX value to center the div horizontally-->
+<!--      // console.log("containerWidth")-->
+<!--      // console.log(containerWidth)-->
+<!--      // console.log("divWidth")-->
+<!--      // console.log(divWidth)-->
+<!--      // console.log("marginLeft")-->
+<!--      // console.log(marginLeft)-->
+<!--      dynamicDiv.style.marginLeft = marginLeft + 'px';-->
+<!--      // Or use CSS transforms for centering:-->
+<!--      // dynamicDiv.style.transform = 'translateX(' + marginLeft + 'px)';-->
+<!--    });-->
+<!--  </script>-->
+
+</div>
+
+

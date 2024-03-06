@@ -1,0 +1,239 @@
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Tasks | Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/app-assets/css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="user_sidebar :: user_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="user_navbar :: user_navbar"></div>
+
+
+
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="row" th:if="${tasks == null and upcomingHackathon != null}">
+
+                    <div class="col-lg-8">
+
+                        <!-- Collapsable Card Example -->
+                        <div class="card shadow mb-4 border-left-warning" >
+
+                            <div class="card-header">
+                                Upcoming Hackathon
+                            </div>
+                            <div class="card-body">
+                                <p style="white-space: pre-line;" id="upcomingHackathonStartTime" th:if="${upcomingHackathon != null}" th:text="${ 'Hackathon Starts at: ' + upcomingHackathon.startDateTime }"></p>
+                                <p style="white-space: pre-line;"><i>The page should automatically refresh when Hackathon Starts. If not please reload the page.</i></p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" th:if="${tasks != null}">
+                    <div class="col-lg-12">
+                        <!-- Collapsable Card Example -->
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Accordion -->
+                            <a href="#hackdescriptionintro" class="d-block card-header py-3" data-toggle="collapse"
+                               role="button" aria-expanded="true">
+                                <h6 class="m-0 font-weight-bold text-primary" th:text="${hackathonTitle}">Task title</h6>
+                            </a>
+                            <!-- Card Content - Collapse -->
+                            <div class="collapse show" id="hackdescriptionintro">
+
+
+                                <div class="card-body">
+                                    <p style="white-space: pre-line;" th:text="${hackathonDescription}"></p>
+
+
+                                    <div class="row">
+
+                                        <div class="col-8">
+                                        </div>
+                                        <div class="col-4">
+
+                                            <a th:if="${hackathonGeneralBoardEnabled}" class="btn btn-outline-primary btn-block mt-2" th:href="${'/generalboard' }" >General Board &raquo;</a>
+                                            <a th:if="${hackathonLeaderBoardEnabled}" class="btn btn-outline-primary btn-block mt-2" th:href="${'/leaderboard' }" >Leader Board &raquo;</a>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" th:if="${tasks != null}"
+                     th:each="task : ${tasks}">
+
+
+                    <div class="col-lg-8">
+
+                        <!-- Collapsable Card Example -->
+                        <div class="card shadow mb-4" th:classappend="${task.complete ? ' border-left-success' : ' border-left-danger'}">
+
+
+                            <!-- Card Header - Accordion -->
+                            <a th:href="${'#collapseCard'+task.task.id}" class="d-block card-header py-3" data-toggle="collapse"
+                               role="button" aria-expanded="false">
+                                <h6 class="m-0 font-weight-bold text-primary" th:text="${task.task.title}">Task title</h6>
+                            </a>
+                            <!-- Card Content - Collapse show-->
+                            <div class="collapse" th:id="${'collapseCard'+task.task.id}">
+                                <div class="card-body">
+                                    <p th:text="${task.task.description}"></p>
+
+                                    <hr/>
+
+                                    <div class="row">
+
+                                        <div class="col-8">
+                                            <p th:if="${task.complete}">Task completed.</p>
+                                            <p th:unless="${task.complete}">Task incomplete. </p>
+                                            <p th:if="${task.hasStarted and !task.complete}" th:text="${'Attempt Started at: ' + task.attemptStartTime}"></p>
+
+                                        </div>
+                                        <div class="col-4">
+
+                                            <a th:unless="${task.complete}" class="btn btn-outline-primary btn-block mt-2" th:href="${'/task/editor/' + task.task.id }" >Attempt &raquo;</a>
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row" th:if="${tasks == null and upcomingHackathon == null}">
+
+                    <div class="col-lg-6">
+
+                        <!-- Collapsable Card Example -->
+                        <div class="card shadow mb-4 border-left-warning" >
+
+
+                            <!-- Card Header - Accordion -->
+                            <a href="#" class="d-block card-header py-3" data-toggle="collapse"
+                               role="button" aria-expanded="true">
+                                <h6 class="m-0 font-weight-bold text-primary">No tasks found. No active hackathon.</h6>
+                            </a>
+                            <!-- Card Content - Collapse -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<script th:inline="javascript">
+    console.log("Here we go!");
+    var upcomingHackathon = /*[[${upcomingHackathon}]]*/ null; // Replace with your attribute name
+
+    if (upcomingHackathon != null) {
+        console.log("upcomingHackathon not null");
+        /* Get the startDateTime from the Spring model attribute */
+        var startDateTime = new Date(upcomingHackathon.startDateTime);
+
+        const humanReadable = startDateTime.toLocaleString();
+        const paragraphElement = document.getElementById("upcomingHackathonStartTime");
+        paragraphElement.textContent = "Hackathon starts at: " + humanReadable;
+
+        /* Calculate the time remaining until startDateTime */
+        var currentTime = new Date();
+        // console.log(currentTime);
+
+        var timeUntilReload = startDateTime - currentTime;
+        /* Reload the page after the calculated time has passed */
+        setTimeout(function () {
+            // console.log("Reloading...");
+            location.reload();
+        }, timeUntilReload);
+    }
+</script>
+
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+
+<!-- Page level plugins -->
+<!-- Page level custom scripts <script th:src="@{/app-assets/vendor/chart.js/Chart.min.js}"></script>
+
+
+<script th:src="@{/app-assets/js/demo/chart-area-demo.js}"></script>
+<script th:src="@{/app-assets/js/demo/chart-pie-demo.js}"></script> -->
+
+</body>
+
+</html>
+
+
+
+

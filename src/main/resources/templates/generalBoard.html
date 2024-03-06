@@ -1,0 +1,326 @@
+<div class="container-fluid" th:fragment="general_board" xmlns:th="http://www.thymeleaf.org">
+
+
+  <!--===============================================================================================-->
+  <!--  <link rel="stylesheet" type="text/css" th:href="${vendor_timer/bootstrap/css/bootstrap.min.css">-->
+  <!--===============================================================================================-->
+  <!--  <link rel="stylesheet" type="text/css" th:href="${fonts_timer/fontawesome/css/fontawesome.min.css}">-->
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/vendor_timer/animate/animatetimer.css}" type="text/css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/vendor_timer/select2/select2.min.css}" type="text/css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/vendor_timer/countdowntime/flipclock.css}" type="text/css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/css_timer/utiltimer.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/app-assets/css_timer/maintimer.css}" type="text/css">
+
+  <style>
+    .fullscreen-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .icon {
+      font-size: 20px;
+    }
+
+    /* Full screen mode */
+    #containerxxx.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      box-shadow: none;
+      background-color: white;
+    }
+  </style>
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"/>-->
+
+
+  <!--===============================================================================================-->
+
+
+  <div id="containerxxx">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center">
+      <!--      <div class="p-t-34 p-b-60 respon3">-->
+      <h3 class="text-center">Time until end of hackathon (DD:HH:MM:SS)</h3>
+
+      <!--      </div>-->
+    </div>
+    <div class="col-md-3">
+      <div class="fullscreen-button" id="fullscreen-button">
+        <span class="icon">&#x2922;</span>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="container-sm" style="text-align: center;">
+      <!-- Your content goes here -->
+      <div class="cd100 block" id="centeredDivx"></div>
+    </div>
+
+  <!--  <h3 class="text-center">All Users</h3>-->
+
+    <div class="row">
+      <div class="col-md-12 text-center">
+          <h3 class="text-center">Live Hackathon statistic </h3>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-3">
+        <div class="card mb-4">
+          <div class="card-header">Average Score</div>
+          <div class="card-body">
+             <h1 id= "averageScore" th:text="${averageScore}">0.0</h1>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-3">
+        <div class="card mb-4">
+          <div class="card-header">Best Score</div>
+          <div class="card-body">
+            <h1 id= "bestScore" th:text="${bestScore}">0.0</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+
+        <div class="card mb-4">
+          <div class="card-header">Average Attempts Per Task</div>
+          <div class="card-body">
+            <h1 id= "averageAttemptsPerTask" th:text="${averageAttemptsPerTask}">0.0</h1>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-3">
+        <div class="card mb-4">
+          <div class="card-header">Average Time Per Task</div>
+          <div class="card-body">
+            <h1 id= "averageTimePerTask" th:text="${averageTimePerTask}">0.0</h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+
+    <div class="row" th:if="${userScore > -1}">
+
+      <div class="col-md-2"> </div>
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <div class="card-header">Your Score</div>
+          <div class="card-body">
+            <h1 id= "userScore" th:text="${userScore}">0.0</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+
+        <div class="card mb-4">
+          <div class="card-header">Your Position</div>
+          <div class="card-body">
+            <h1 id= "userPosition" th:text="${userPosition}">0.0</h1>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-2"></div>
+
+    </div>
+
+
+
+  <div class="row">
+
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+
+      <h3 class="text-center">Names of teams participating in this hackathon</h3>
+      <table class="table table-hover table-sm">
+        <thead>
+        <tr>
+          <th>Team Name</th>
+        </tr>
+        </thead>
+
+        <tbody id="table-body" >
+
+        <tr class=""
+            th:each="team : ${teams}"
+            th:if="${teams != null}">
+
+          <td>
+            <div class="d-flex align-items-baseline">
+              <h4 class="mr-1" th:text="${team}" style="padding: 5px; padding-left: 20px;"></h4>
+            </div>
+          </td>
+
+
+        </tr>
+
+
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-md-3"></div>
+
+  </div>
+  </div>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/jquery/jquery-3.2.1.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/bootstrap/js/popper.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/bootstrap/js/bootstrap.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/select2/select2.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/flipclock.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment-timezone.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment-timezone-with-data.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/countdowntime.js}"></script>
+  <script th:inline="javascript">
+
+    var leftHour = /*[[${timLeftHour}]]*/ 0;
+    var leftDay = /*[[${timLeftDay}]]*/ 0;
+    var leftMinute = /*[[${timLeftMin}]]*/ 0;
+    var leftSecond = /*[[${timLeftSec}]]*/ 0;
+    var leftYear = /*[[${timLeftYear}]]*/ 0;
+    var leftMonth = /*[[${timLeftMonth}]]*/ 0;
+
+  </script>
+
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/tilt/tilt.jquery.min.js}"></script>
+  <script>
+    $('.js-tilt').tilt({
+      scale: 1.1
+    })
+
+
+  </script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/js_timer/main.js}"></script>
+
+  <script>
+
+    var fanc = $('.cd100');
+    fanc.countdown100({
+      endtimeYear: 0,
+      endtimeMonth: 0,
+      endtimeDate: 0,
+      endtimeHours: 0,
+      endtimeMinutes: 0,
+      endtimeSeconds: 10,
+      timeZone: "",
+    });
+
+    function setClock(leftYear, leftMonth, leftDay, leftHour, leftMinute, leftSecond) {
+
+      fanc.countdown100({
+        endtimeYear: leftYear,
+        endtimeMonth: leftMonth,
+        endtimeDate: leftDay,
+        endtimeHours: leftHour,
+        endtimeMinutes: leftMinute,
+        endtimeSeconds: leftSecond,
+        timeZone: "",
+      });
+
+    }
+    setClock(leftYear, leftMonth, leftDay, leftHour, leftMinute, leftSecond);
+
+  </script>
+  <script>
+    function updateLeaderBoard() {
+      $.ajax({
+        url: "/generalboard/rest",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          setClock(data.timLeftYear, data.timLeftMonth, data.timLeftDay,
+                  data.timLeftHour, data.timLeftMin, data.timLeftSec);
+
+
+          var averageTimePerTask = document.getElementById("averageTimePerTask");
+          var averageScore = document.getElementById("averageScore");
+          var bestScore = document.getElementById("bestScore");
+          var averageAttemptsPerTask = document.getElementById("averageAttemptsPerTask");
+
+
+          averageTimePerTask.textContent = data.averageTimePerTask;
+          averageScore.textContent = data.averageScore;
+          bestScore.textContent = data.bestScore;
+          averageAttemptsPerTask.textContent = data.averageAttemptsPerTask;
+
+          // this means, its a user call to general board
+          if (data.userScore > -1){
+            var userPosition = document.getElementById("userPosition");
+            var userScore = document.getElementById("userScore");
+
+            userPosition.textContent = data.userPosition;
+            userScore.textContent = data.userScore;
+
+          }
+
+
+        }
+      });
+    }
+
+
+
+    // Initial metrics update
+    updateLeaderBoard();
+
+    // Periodic metrics update every 1 minute
+    setInterval(function () {
+      updateLeaderBoard();
+    }, 60000);
+
+
+
+    const fullscreenButton = document.getElementById('fullscreen-button');
+    const container = document.getElementById('containerxxx');
+
+    fullscreenButton.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        container.requestFullscreen();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      container.classList.toggle('fullscreen', !!document.fullscreenElement);
+    });
+
+
+  </script>
+
+
+
+</div>
+
+

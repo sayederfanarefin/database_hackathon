@@ -1,0 +1,260 @@
+<html>
+
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>User Details | Dashboard</title>
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/app-assets/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/app-assets/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/app-assets/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/app-assets/site.webmanifest}">
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/app-assets/css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="admin_sidebar :: admin_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="admin_navbar :: admin_navbar"></div>
+
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="card mb-4">
+                            <div class="card-header" th:if="${not admin}" >User Information</div>
+                            <div class="card-header" th:if="${admin}" >Admin Information</div>
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-6" style="padding-left: 4px;">
+
+
+                                        <div class="circular-image-holder"
+                                             style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden;margin: 0 auto; text-align: center;">
+
+
+                                            <img th:src="${user.pathToProPic}" alt="User Profile Picture"
+                                                 style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-1"></div>
+                                            <div class="col-md-10">
+                                                <div class="row" style="margin-bottom: 6px; margin-top: 24px;">
+                                                    <div class="col-6">
+                                                        <a th:href="@{'/users/edit/'+${user.id}}">
+                                                            <button class="btn btn-outline-info btn-block">Edit</button>
+                                                        </a>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <a th:href="@{'/users/delete/'+${user.id}}">
+                                                            <button class="btn btn-outline-danger btn-block"  th:disabled="${admin}">Delete
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <button class="btn btn-outline-secondary btn-block"
+                                                                id="resetprofilepicture">Reset Profile Picture to
+                                                            Default
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+
+                                                        <button class="btn btn-outline-secondary btn-block"
+                                                                id="resetPassword">Reset Password
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <h4 th:text="${user.getFullName()}"></h4>
+                                        <hr/>
+                                        <p th:text="'Email: ' + ${user.email}"></p>
+
+                                        <p th:text="'Team Name: ' + ${user.teamName}"></p>
+
+                                        <p th:if="${admin}" ><b>This is an ADMIN Profile</b></p>
+
+
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th colspan="2" class="border">User Database Details</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="border">Database User Name</td>
+                                                <td class="border" th:text="${user.databaseUserName}">Column 2</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="border">Database Name</td>
+                                                <td class="border" th:text="${user.databaseName}">Column 2</td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+
+<script th:inline="javascript">
+
+    var itemId = /*[[${user.id}]]*/ -1;
+
+</script>
+
+
+<script>
+    // Get the button element
+    var resetProfileButton = document.getElementById("resetprofilepicture");
+    var resetPassword = document.getElementById("resetPassword");
+
+    // Add a click event listener to the button
+    resetProfileButton.addEventListener("click", function () {
+        // Construct the URL with the itemid as a path variable
+        const url = `/user/resetprofilepicture/${itemId}`;
+
+        console.log("Resetiing the image")
+        // Make a POST request to the URL
+        fetch(url, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Handle the response here
+                } else {
+                    throw new Error('Failed to post data');
+                }
+            })
+            .then(responseData => {
+                if (responseData.message === "success") {
+                    // Reload the window if the response indicates success
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+
+
+    resetPassword.addEventListener("click", function () {
+        // Construct the URL with the itemid as a path variable
+        const url = `/user/resetpassword/${itemId}`;
+
+        console.log("Resetiing the password")
+        // Make a POST request to the URL
+        fetch(url, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Handle the response here
+                } else {
+                    throw new Error('Failed to post data');
+                    // window.alert("Something went wrong!");
+
+                }
+            })
+            .then(responseData => {
+                if (responseData.message === "Failed, not admin.") {
+                    // Reload the window if the response indicates success
+                    window.alert("Something went wrong!");
+                } else {
+                    window.alert("New Password: " + responseData.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+</script>
+
+
+</body>
+
+</html>

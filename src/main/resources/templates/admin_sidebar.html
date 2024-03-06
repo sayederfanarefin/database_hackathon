@@ -1,0 +1,122 @@
+
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"
+    xmlns:th="http://www.thymeleaf.org" th:fragment="admin_sidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+        <div class="sidebar-brand-icon">
+            <!-- <i class="fas fa-laugh-wink"></i> -->
+            <i class="fas fa-database"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Hackathon</div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+
+    <li class="nav-item" th:classappend="${pageTitle == 'Dashboard' ? ' active' : ''}">
+        <a class="nav-link" th:href="@{/admin}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item" th:classappend="${pageTitle == 'Leader Board' ? ' active' : ''}">
+        <a class="nav-link" th:href="@{/leaderboard}">
+            <i class="fas fa-fw fa-chart-bar"></i>
+            <span>Leader Board</span></a>
+    </li>
+
+    <li class="nav-item" th:classappend="${pageTitle == 'General Board' ? ' active' : ''}">
+        <a class="nav-link" th:href="@{/generalboard}">
+            <i class="fas fa-fw fa-chart-bar"></i>
+            <span>General Board</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        User Operations
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item" th:classappend="${pageTitle == 'Create User' or pageTitle == 'All Users' ? ' active' : ''}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+           aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-fw fa-user-circle"></i>
+
+            <span>Users</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" th:classappend="${pageTitle == 'Create User' or pageTitle == 'All Users' or pageTitle == 'Create User Batch' ? ' show' : ''}">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Users:</h6>
+                <a class="collapse-item" th:href="@{/users/create}" th:classappend="${pageTitle == 'Create User' ? ' active' : ''}">Create</a>
+                <a class="collapse-item" th:href="@{/users/create/batch}" th:classappend="${pageTitle == 'Create User Batch' ? ' active' : ''}">Create in Batch</a>
+                <a class="collapse-item" th:href="@{/users/view/all}" th:classappend="${pageTitle == 'All Users' ? ' active' : ''}">View All</a>
+            </div>
+        </div>
+    </li>
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Hackathon Operations
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu   -->
+    <li class="nav-item" th:classappend="${pageTitle == 'Create Hackathon' or pageTitle == 'All Hackathons' or pageTitle == 'Create Task'or pageTitle == 'All Tasks' or pageTitle == 'Test Query Tool' ? ' active' : ''}">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+           aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-code"></i>
+            <span>Hackathon</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar" th:classappend="${pageTitle == 'Create Hackathon' or pageTitle == 'All Hackathons' or pageTitle == 'Create Task' or pageTitle == 'Test Query Tool' or pageTitle == 'All Tasks' or pageTitle == 'All Custom DB' or pageTitle == 'Custom DB Query Tool' or pageTitle == 'Create Custom DB' ? ' show' : ''}">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Hackathon Operations:</h6>
+                <a class="collapse-item" th:href="@{/hackathon/create}" th:classappend="${ pageTitle == 'Create Hackathon' ? ' active' : ''}">Create</a>
+                <a class="collapse-item" th:href="@{/hackathon/view/all}" th:classappend="${ pageTitle == 'All Hackathons' ? ' active' : ''}">View All</a>
+            </div>
+
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Task Operations:</h6>
+                <a class="collapse-item" th:href="@{/task/create}" th:classappend="${pageTitle == 'Create Task' ? ' active' : ''}">Create</a>
+                <a class="collapse-item" th:href="@{/task/test}" th:classappend="${pageTitle == 'Test Query Tool'? ' active' : ''}">Test Query Tool</a>
+                <a class="collapse-item" th:href="@{/task/view/all}" th:classappend="${pageTitle == 'All Tasks' ? ' active' : ''}">View All</a>
+            </div>
+
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Custom DB Operations:</h6>
+                <a class="collapse-item" th:href="@{/customdb/create}" th:classappend="${pageTitle == 'Create Custom DB' ? ' active' : ''}">Create</a>
+                <a class="collapse-item" th:href="@{/customdb/test}" th:classappend="${pageTitle == 'Custom DB Query Tool'? ' active' : ''}">Custom DB Query Tool</a>
+                <a class="collapse-item" th:href="@{/customdb/view/all}" th:classappend="${pageTitle == 'All Custom DB' ? ' active' : ''}">View All</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Charts -->
+    <li class="nav-item" th:classappend="${pageTitle == 'Server Load' ? ' active' : ''}">
+        <a class="nav-link" th:href="@{/serverload}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Server Load</span></a>
+    </li>
+
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+
+
+</ul>
+<!-- End of Sidebar -->

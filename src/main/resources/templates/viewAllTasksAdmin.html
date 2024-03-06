@@ -1,0 +1,389 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+
+    <title>View All Tasks | Dashboard</title>
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/app-assets/apple-touch-icon.png}">
+    <link rel="icon" sizes="32x32" th:href="@{/app-assets/favicon-32x32.png}" type="image/png">
+    <link rel="icon" sizes="16x16" th:href="@{/app-assets/favicon-16x16.png}" type="image/png">
+    <link rel="manifest" th:href="@{/app-assets/site.webmanifest}">
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" th:href="@{/app-assets/css/sb-admin-2.min.css}">
+
+    <style>
+        .xyxx{
+            color: red;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="admin_sidebar :: admin_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div class="d-flex flex-column" id="content-wrapper">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="admin_navbar :: admin_navbar"></div>
+
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="modal" id="loadingModal" tabindex="-1" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Running... Please wait.</span>
+                                </div>
+                                <p>Deleting... Please wait.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal" id="deleteModal" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete Task</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button" id="modal-close-2" >
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete? The task will be removed from the following hackathon(s). You may need to add other tasks to the affected hackathons.</p>
+
+                                <div style="max-height: 200px; overflow: auto;">
+                                    <table class="table table-hover"
+                                           id="hackathons-list">
+                                        <thead>
+                                        <tr>
+                                            <th class="border">Title</th>
+                                            <th class="border">Actions</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody> </tbody>
+                                    </table>
+                                </div>
+
+                                <input type="checkbox" id="deleteHack">
+                                <label for="deleteHack">Delete Hackathons, where this is the only task. </label>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" id="modal-close" type="button">No</button>
+                                <button class="btn btn-danger" id="confirmDelete" type="button">Yes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <span id="globalError" class="alert alert-danger col-sm-12 align-items-center" style="display:none">Can not delete item. Please try again later.</span>
+                    <span id="globalSuccess" class="alert alert-success col-sm-12 align-items-center" style="display:none">Task Deleted!</span>
+
+                </div>
+
+                <div class="table-responsive" th:fragment="task-list">
+                    <table class="table table-striped table-hover"
+                           id="invoices-list">
+                        <thead>
+                        <tr>
+
+                            <th>Title</th>
+                            <th>Description</th>
+                            <!--                            <th>Output Test Query</th>-->
+                            <!--                            <th>Output Test Match String</th>-->
+                            <!-- <th>Contact Person Name</th> -->
+                            <!-- <th>Joining Date</th> -->
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody th:if="${#lists.isEmpty(data.content)}">
+                        <tr>
+
+                            <td colspan="3" style="text-align:center">No Tasks to show</td>
+                        </tr>
+
+                        </tbody>
+                        <tbody>
+
+                        <tr th:id="'item-'+${task.id}" th:each="task : ${data.content}"
+                            th:if="${data != null}">
+
+                            <td th:text="${task.title}">
+
+                            </td>
+                            <td th:text="${task.description}">
+
+                            </td>
+
+                            <td>
+                                <a th:href="@{'/task/view/'+${task.id}}">
+                                    <button class="btn btn-primary btn-sm">View</button>
+                                </a>
+
+                                <a th:href="@{'/task/edit/'+${task.id}}">
+                                    <button class="btn btn-warning btn-sm">Edit</button>
+                                </a>
+
+
+                                <button class="btn btn-danger btn-sm" th:attr="onclick=|openModal('${task.id}')|" >Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <div class="form-group col-md-11 pagination-centered"
+                         th:if="${data.totalPages != 0}">
+                        <ul class="pagination justify-content-center">
+
+                            <li th:class="${data.number == 0} ? disabled"><a class="page-link" th:href="'/task/view/all/'+ ${data.number-1}">Previous</a>
+                            </li>
+
+                            <li  th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                                <a class="page-link" th:href="'/task/view/all/'+ ${page-1}" th:text="${page}" th:classappend="${data.number == (page-1 )} ? 'pointer-disabled xyxx'" ></a>
+                            </li>
+                            <li
+                                    th:class="${data.number == (data.totalPages-1)} ? disabled">
+                                <a class="page-link"
+                                   th:href="'/task/view/all/'+ ${data.number + 1}" >Next</a>
+<!--                                   th:onclick="'javascript:loadEmployee(\''+ ${data.number + 2} +'\');'"-->
+
+                            </li>
+                            <!-- <li
+                                th:class="${data.number + 1 == data.totalPages} ? disabled">
+                                <a class="page-link" th:onclick="'javascript:loadEmployee(\''+ ${data.totalPages} +'\');'"
+                                >»</a>
+                            </li> -->
+                        </ul>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+
+        <div th:replace="delete_modal :: delete_modal"></div>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+
+
+<script th:inline="javascript">
+    var serverContext = [[@{/}]];
+
+</script>
+
+<script th:inline="javascript">
+    var tasksX = /*[[${data.content}]]*/ "";
+</script>
+
+<script th:inline="javascript" >
+    var itemToDelete = "ass";
+    // Get the modal and buttons
+    var deleteModal;
+    var deleteButtons;
+    var confirmDeleteButton;
+    var closeModalButton;
+
+    function openModal(itemId) {
+
+        console.log(itemId);
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.style.display = 'block';
+        itemToDelete = itemId;
+
+        for (let i = 0; i < tasksX.length; i++) {
+            const taskX = tasksX[i];
+            // console.log(`CustomDb ID: ${customDb.id}, Name: ${customDb.name}`);
+            // Perform any desired operations on each customDb here
+            if (taskX.id == itemId){
+                populateTasksTable(taskX.hackathons);
+                break;
+            }
+        }
+
+    }
+
+    function populateTasksTable(hackathons) {
+        // Find the table body where you want to display the tasks
+        const tableBody = document.querySelector('#hackathons-list tbody');
+
+        // Clear the table body to remove any previous data
+        tableBody.innerHTML = '';
+
+        if (hackathons.length === 0) {
+            // If there are no tasks, display a message
+            const noHackathonsRow = document.createElement('tr');
+            noHackathonsRow.innerHTML = '<td class="border" colspan="2" style="text-align:center">No Hackathons associated with the task.</td>';
+            tableBody.appendChild(noHackathonsRow);
+        } else {
+            // Populate the table with the filtered tasks
+            hackathons.forEach(hackathon => {
+                const hackathonRow = document.createElement('tr');
+                hackathonRow.innerHTML = `
+                <td class="border">${hackathon.title}</td>
+                <td class="border">
+                    <a href="/hackathon/view/${hackathon.id}">
+                        <button class="btn btn-outline-primary btn-sm">View</button>
+                    </a>
+                </td>
+            `;
+                tableBody.appendChild(hackathonRow);
+            });
+        }
+    }
+
+    function deleteRow(rowId) {
+        var row = document.getElementById(rowId); // Get the row element by ID
+        if (row) {
+            row.parentNode.removeChild(row); // Remove the row
+        }
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        deleteModal = document.getElementById('deleteModal');
+        deleteButtons = document.getElementById('delete-button');
+        confirmDeleteButton = document.getElementById('confirmDelete');
+        closeModalButton = document.getElementById('modal-close');
+        closeModalButton2 = document.getElementById('modal-close-2');
+
+        closeModalButton.addEventListener('click', () => {
+            closeModal();
+        });
+
+        closeModalButton2.addEventListener('click', () => {
+            closeModal();
+        });
+
+        confirmDeleteButton.addEventListener('click', () => {
+
+            closeModal();
+            const loadingModal = document.getElementById('loadingModal');
+            loadingModal.style.display='block';
+
+            var formData = null;
+
+            var checkboxDeleteHack = document.getElementById("deleteHack");
+            var isCheckedDeleteHack = checkboxDeleteHack.checked;
+            var urlToDelete = serverContext + "task/delete/" + itemToDelete + "/" + isCheckedDeleteHack ;
+
+
+
+            $.post(urlToDelete,formData ,function(data){
+                if(data.message == "success"){
+                    loadingModal.style.display='none';
+                    deleteRow("item-"+ itemToDelete);
+                    $("#globalSuccess").show();
+                    setTimeout(function() {
+                        // function code goes here
+                        $("#globalSuccess").hide();
+                    }, 3000);
+                }
+
+            })
+                .fail(function(data) {
+                    loadingModal.style.display='none';
+                    $("#globalError").show();
+                    setTimeout(function() {
+                        // function code goes here
+                        $("#globalError").hide();
+                    }, 3000);
+                });
+
+        });
+
+
+    });
+
+
+
+
+</script>
+</body>
+
+</html>

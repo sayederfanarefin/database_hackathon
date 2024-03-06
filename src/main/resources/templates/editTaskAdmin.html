@@ -1,0 +1,787 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/app-assets/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/app-assets/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/app-assets/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/app-assets/site.webmanifest}">
+
+    <title>Edit Task | Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"/>
+
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/app-assets/css/sb-admin-2.min.css}" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="admin_sidebar :: admin_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="admin_navbar :: admin_navbar"></div>
+
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+
+                                    <form class="task" id="createTaskForm" method="POST" enctype="utf8">
+
+                                        <input type="hidden" name="id" id="id" th:value="${task.id}">
+
+                                        <div class="col px-1 mb-2">
+                                            <h2>Instructions</h2>
+                                            <p style="white-space: pre-line;"
+                                               th:text="${uiCreateInstructions + databasePlaceHolder}"></p>
+                                            <div class="row">
+
+                                                <div class="col-8"></div>
+
+                                                <div class="col-4">
+                                                    <a class="btn btn-outline-primary btn-block mt-2" href="/task/test">Test
+                                                        Task Query &raquo;</a>
+
+                                                </div>
+                                            </div>
+                                            <br/>
+                                        </div>
+                                        <h4>Basic Information</h4>
+                                        <div class="col px-1 mb-2">
+                                            <label for="title" class="ms-2 position-absolute"
+                                                   style="margin-top: -0.25rem !important">
+                                                <span class="h6 small bg-white text-muted px-1">Title (required)</span>
+                                            </label>
+                                            <input type="text" class="form-control mt-2" id="title" name="title" th:value="${task.title}"
+                                                   required>
+                                            <span id="titleError" class="alert alert-danger col-sm-12"
+                                                  style="display:none" ></span>
+
+                                        </div>
+
+                                        <br/>
+
+                                        <div class="col px-1 mb-2">
+                                            <label for="description" class="ms-2 position-absolute"
+                                                   style="margin-top: -0.25rem !important">
+                                                <span class="h6 small bg-white text-muted px-1">Description (required)</span>
+                                            </label>
+                                            <textarea type="text" class="form-control mt-2" id="description"
+                                                      name="description" required="required" rows="6"
+                                                      cols="100" th:text="${task.description}"> </textarea>
+                                            <span id="descriptionError" class="alert alert-danger col-sm-12"
+                                                  style="display:none"></span>
+
+                                        </div>
+
+                                        <br/>
+
+                                        <div class="col px-1 mb-2">
+                                            <p>Feedback is shown after the hackathon.</p>
+                                            <label for="description" class="ms-2 position-absolute"
+                                                   style="margin-top: -0.25rem !important">
+                                                <span class="h6 small bg-white text-muted px-1">Feedback (optional)</span>
+                                            </label>
+                                            <textarea type="text" class="form-control mt-2" id="feedBack"
+                                                      name="feedBack" rows="6"
+                                                      cols="100" th:text="${task.feedBack}"> </textarea>
+
+
+                                        </div>
+                                        <br/>
+                                        <div class="col px-1 mb-2">
+                                            <p>Private Notes can be viewed by Admins only.</p>
+                                            <label for="privateNotes" class="ms-2 position-absolute"
+                                                   style="margin-top: -0.25rem !important">
+                                                <span class="h6 small bg-white text-muted px-1">Private Notes (optional)</span>
+                                            </label>
+                                            <textarea type="text" class="form-control mt-2" id="privateNotes"
+                                                      name="privateNotes" rows="3"
+                                                      cols="100" th:text="${task.privateNotes}"> </textarea>
+                                        </div>
+
+                                        <br/>
+
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="col px-1 mb-2">
+                                                    <label for="maxAllowedAttempts" class="ms-2 position-absolute"
+                                                           style="margin-top: -0.25rem !important">
+                                                        <span class="h6 small bg-white text-muted px-1">Maximum Number of Attempts (required)</span>
+                                                    </label>
+                                                    <input type="number" class="form-control mt-2"
+                                                           id="maxAllowedAttempts" name="maxAllowedAttempts" required
+                                                           min="1" th:value="${task.maxAllowedAttempts}">
+                                                    <!--                                            <span id="titleError" class="alert alert-danger col-sm-12" style="display:none"></span>-->
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <br/>
+
+                                        <h4>Evaluation</h4>
+                                        <p> Select the following based on the instructions above. </p>
+                                        <p> Either 1 or 2</p>
+                                        <p> For 2, you can use i or ii or both</p>
+                                        <p> Be very careful.</p>
+                                        <hr/>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- Add a button that toggles the input block -->
+                                                <!--                                                <button class="btn btn-primary" id="toggleButton">Toggle Input Block</button>-->
+
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           id="testCasesCheck" name="testCasesCheck" >
+                                                    <label class="custom-control-label" for="testCasesCheck">1. For
+                                                        Custom Database Task: This task needs to check for test cases.
+                                                        This can only be done on Custom Databases.</label>
+                                                </div>
+
+
+                                                <!-- Add a div to contain the input block -->
+                                                <div id="inputBlock3" class="collapse">
+                                                    <!-- Add the inputs inside this div -->
+
+                                                    <br/>
+
+                                                    <img th:src="@{/app-assets/flow.png}" alt="Flow Image"
+                                                         style="padding: 12px; margin-bottom: 20px;">
+
+
+                                                    <br>
+
+                                                    <div class="form-group">
+                                                        <label>Please select one from the options below. You can get the
+                                                            idea of how tests are executed from the flow chart
+                                                            above.</label>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input th:text="${'  ' +QUERY_TYPE_DML}" type="radio"
+                                                                       id="optionsRadios1" name="queryType"
+                                                                       th:value="${QUERY_TYPE_DML}" checked>
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label>
+                                                                <input th:text="${'  ' +QUERY_TYPE_DQL}" type="radio"
+                                                                       id="optionsRadios2" name="queryType"
+                                                                       th:value="${QUERY_TYPE_DQL}">
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                    <br>
+
+                                                    <div class="col px-1 mb-2">
+                                                        <label for="dbId">Select a Custom DB:</label>
+                                                        <select class="form-control" id="dbId" name="dbId"
+                                                                onchange="storeDbId(this)">
+                                                            <option value="" disabled selected>Select a Custom DB
+                                                            </option>
+                                                            <option th:each="db : ${dbList}" th:value="${db.id}"
+                                                                    th:text="${db.name}" th:id="'customdboptions-'+${db.id}"></option>
+                                                        </select>
+                                                        <p id="selectionError" style="color: red; display: none;">Please select a Custom DB.</p>
+                                                    </div>
+
+
+
+                                                    <input type="hidden" value="" id="customDbId" name="customDbId">
+
+
+                                                    <br/>
+
+
+                                                    <div class="row">
+
+                                                        <div class="col-8"></div>
+
+                                                        <div class="col-4">
+                                                            <a id="customDbQueryToolLink"
+                                                               class="btn btn-outline-primary btn-block mt-2"
+                                                               href="/customdb/test" target="_blank">Custom DB Query
+                                                                Tool &raquo;</a>
+
+
+                                                        </div>
+                                                    </div>
+
+                                                    <br/>
+
+                                                    <h6>Test Cases: </h6>
+
+                                                    <div id="test-cases-container">
+                                                        <!-- Initial pair of text areas -->
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                <label for="query0">Query 0</label>
+                                                                <textarea class="form-control" rows="4" id="query0"
+                                                                          name="testCases[0].query"></textarea>
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                <label for="output0">Output 0</label>
+                                                                <textarea class="form-control" rows="4" id="output0"
+                                                                          name="testCases[0].output"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4"></div>
+                                                        <div class="col-md-4">
+                                                            <button type="button" id="add-test-case"
+                                                                    class="btn btn-block btn-primary">Add another
+                                                                Test-case
+                                                            </button>
+
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <button type="button" id="remove-last"
+                                                                    class="btn btn-block btn-danger">Remove Last
+                                                                Test-case
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <br/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr/>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- Add a button that toggles the input block -->
+                                                <!--                         th:value="${task.testCasesCheck}"                        <button class="btn btn-primary" id="toggleButton">Toggle Input Block</button>-->
+
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           id="outPutQueryCheck" name="outPutQueryCheck" >
+                                                    <label class="custom-control-label" for="outPutQueryCheck">2(i).
+                                                        This task has an output query, which can be used to valided some
+                                                        user task.</label>
+                                                </div>
+
+
+                                                <!-- Add a div to contain the input block -->
+                                                <div id="inputBlock2" class="collapse">
+                                                    <!-- Add the inputs inside this div -->
+
+                                                    <br/>
+
+                                                    <div class="col px-1 mb-2">
+                                                        <label for="outputTestQuery" class="ms-2 position-absolute"
+                                                               style="margin-top: -0.25rem !important">
+                                                            <span class="h6 small bg-white text-muted px-1">Output Test Query</span>
+                                                        </label>
+                                                        <textarea type="text" class="form-control mt-2"
+                                                                  id="outputTestQuery" name="outputTestQuery" rows="6"
+                                                                  cols="100"> </textarea>
+                                                        <br/>
+                                                        <span id="outputTestQueryError"
+                                                              class="alert alert-danger col-sm-12"
+                                                              style="display:none;"></span>
+
+                                                    </div>
+
+                                                    <br/>
+
+                                                    <div class="col px-1 mb-2">
+                                                        <label for="outputTestMatchString"
+                                                               class="ms-2 position-absolute"
+                                                               style="margin-top: -0.25rem !important">
+                                                            <span class="h6 small bg-white text-muted px-1">Output Test Match String</span>
+                                                        </label>
+                                                        <textarea type="text" class="form-control mt-2"
+                                                                  id="outputTestMatchString"
+                                                                  name="outputTestMatchString" rows="6"
+                                                                  cols="100"> </textarea>
+                                                        <br/>
+                                                        <span id="outputTestMatchStringError"
+                                                              class="alert alert-danger col-sm-12"
+                                                              style="display:none;"></span>
+
+                                                    </div>
+
+                                                    <br/>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- Add a button that toggles the input block -->
+                                                <!--                                                <button class="btn btn-primary" id="toggleButton">Toggle Input Block</button>-->
+
+                                                <div class="custom-control custom-switch">
+                                                    <input type="checkbox" class="custom-control-input" id="logCheck"
+                                                           name="logCheck" >
+                                                    <label class="custom-control-label" for="logCheck">2(ii). Submitted Query
+                                                        Requires Additional Query Matching</label>
+                                                </div>
+
+                                                <!-- Add a div to contain the input block -->
+                                                <div id="inputBlock" class="collapse">
+                                                    <!-- Add the inputs inside this div -->
+
+                                                    <br/>
+
+                                                    <div class="col px-1 mb-2">
+                                                        <label for="fullQueryToSearchFor" class="ms-2 position-absolute"
+                                                               style="margin-top: -0.25rem !important">
+                                                            <span class="h6 small bg-white text-muted px-1">Full Query to Match</span>
+                                                        </label>
+                                                        <textarea type="text" class="form-control mt-2"
+                                                                  id="fullQueryToSearchFor" name="fullQueryToSearchFor"
+                                                                  rows="6" cols="100"> </textarea>
+
+                                                        <br/>
+                                                        <span id="fullQueryToSearchForError"
+                                                              class="alert alert-danger col-sm-12"
+                                                              style="display:none;"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="form-group">
+                                            <span id="globalError" class="alert alert-danger col-sm-10"
+                                                  style="display:none"></span>
+                                            <span id="globalSuccess"
+                                                  class="alert alert-success col-sm-10 align-items-center"
+                                                  style="display:none">Task updated!</span>
+
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Update Task
+                                        </button>
+
+
+                                    </form>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<!-- Page level custom scripts <script th:src="@{/app-assets/vendor/chart.js/Chart.min.js}"></script>
+
+
+<script th:src="@{/app-assets/js/demo/chart-area-demo.js}"></script>
+<script th:src="@{/app-assets/js/demo/chart-pie-demo.js}"></script> -->
+<script th:inline="javascript">
+
+    var taskObj = /*[[${task}]]*/ null;
+
+</script>
+
+<script>
+    var testCaseCount = 0;
+
+    function addNewTestCase(testCaseCountx){
+
+        var newTestCase = `
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="query${testCaseCountx}">Query ${testCaseCountx}</label>
+                            <textarea class="form-control" rows="4" name="testCases[${testCaseCountx}].query" id="query${testCaseCountx}"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="output${testCaseCountx}">Output ${testCaseCountx}</label>
+                            <textarea class="form-control" rows="4" name="testCases[${testCaseCountx}].output" id="output${testCaseCountx}"></textarea>
+                        </div>
+                    </div>
+                `;
+        $("#test-cases-container").append(newTestCase);
+    }
+</script>
+
+<script>
+
+    function setCustomDBIDToQueryTools(selectedDbId){
+        var anchorElement = document.getElementById("customDbQueryToolLink");
+
+        // Set the new value for the 'href' attribute
+        anchorElement.href = "/customdb/test/" + selectedDbId; //
+
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var logCheck = document.getElementById('logCheck');
+        var fullQueryToSearchFor = document.getElementById('fullQueryToSearchFor');
+
+        var testCasesCheck = document.getElementById('testCasesCheck');
+        var dbId = document.getElementById('dbId');
+        var customDbId = document.getElementById('customDbId');
+
+        var outPutQueryCheck = document.getElementById('outPutQueryCheck');
+        var outputTestQuery = document.getElementById('outputTestQuery');
+        var outputTestMatchString = document.getElementById('outputTestMatchString');
+
+
+        if (taskObj.testCasesCheck){
+            testCasesCheck.checked = true;
+            customDbId.value = taskObj.customDbId;
+
+
+            const options = dbId.options;
+            let optionFound = false;
+            const optionToSearch = taskObj.customDbId;
+            // const optionToSearch = 'customdboptions-'+ taskObj.customDbId;
+            for (let i = 0; i < options.length; i++) {
+                console.log(optionToSearch + ' - ' + options[i].value);
+                if (options[i].value == optionToSearch) {
+                    options[i].selected = true;
+                    optionFound = true;
+                    break;
+                }
+            }
+
+            if (!optionFound) {
+                console.warn("Option with ID '" + taskObj.customDbId + "' not found.");
+            }
+            setCustomDBIDToQueryTools(taskObj.customDbId);
+            var inputBlock3 = document.getElementById('inputBlock3');
+            // Toggle its display using the Bootstrap Collapse API
+            $(inputBlock3).collapse('toggle');
+
+            var queryElement0 = document.getElementById('query0');
+            var outputElement0 = document.getElementById('output0');
+
+            queryElement0.textContent = taskObj.testCases[0].query;
+            outputElement0.textContent = taskObj.testCases[0].output;
+
+            for (let i = 1; i < taskObj.testCases.length; i++) {
+                testCaseCount++;
+                addNewTestCase(testCaseCount);
+                var queryElementi = document.getElementById('query' + i);
+                var outputElementi = document.getElementById('output' + i);
+                queryElementi.textContent = taskObj.testCases[i].query;
+                outputElementi.textContent = taskObj.testCases[i].output;
+            }
+        }
+
+        if(taskObj.logCheck){
+            logCheck.checked = true;
+            fullQueryToSearchFor.value = taskObj.fullQueryToSearchFor;
+            var inputBlock = document.getElementById('inputBlock');
+            // Toggle its display using the Bootstrap Collapse API
+            $(inputBlock).collapse('toggle');
+        }
+
+        if (taskObj.outPutQueryCheck){
+            outPutQueryCheck.checked = true;
+            outputTestQuery.value = taskObj.outputTestQuery;
+            outputTestMatchString.value = taskObj.outputTestMatchString;
+            var inputBlock2 = document.getElementById('inputBlock2');
+            // Toggle its display using the Bootstrap Collapse API
+            $(inputBlock2).collapse('toggle');
+        }
+        taskObj = null;
+    });
+
+</script>
+<script th:inline="javascript">
+
+
+    $(document).ready(function () {
+        // Initial count of test cases
+
+        $("#add-test-case").click(function () {
+            testCaseCount++;
+            addNewTestCase(testCaseCount);
+        });
+
+        $("#remove-last").click(function () {
+            if (testCaseCount > 0) {
+                $("#test-cases-container .form-row:last").remove();
+                testCaseCount--;
+            }
+        });
+    });
+
+
+    function validateFormForEvaluation() {
+        // Get references to the checkboxes
+        var outPutQueryCheck = document.getElementById('outPutQueryCheck');
+        var testCasesCheck = document.getElementById('testCasesCheck');
+        var logCheck = document.getElementById('logCheck');
+
+        $("#outputTestQueryError").hide();
+        $("#outputTestMatchStringError").hide();
+        $("#fullQueryToSearchForError").hide();
+
+        // Check if at least one checkbox is selected
+        if (!(outPutQueryCheck.checked || testCasesCheck.checked || logCheck.checked)) {
+
+            $("#globalError").show().append("Please select atleast one  Evaluation method.");
+            return false;
+        } else {
+            $("#globalError").hide();
+        }
+
+        if (testCasesCheck.checked && (outPutQueryCheck.checked || logCheck.checked)) {
+            $("#globalError").show().append("Please select either Evaluation method 1 or 2s (2(i) or 2(ii) or both).");
+            return false;
+        }
+        if (logCheck.checked){
+            var textareaFullQueryToSearchFor = document.getElementById('fullQueryToSearchFor');
+            var fullQueryToSearchForText = textareaFullQueryToSearchFor.value.trim(); // Remove leading and trailing whitespace
+
+            if (fullQueryToSearchForText === '') {
+                $("#fullQueryToSearchForError").text("Evaluation option 2(ii) requires SQL Statement.").show();
+                return false;
+            }
+        }
+        if (outPutQueryCheck.checked){
+            var textareaOutputTestMatchString = document.getElementById('outputTestMatchString');
+            var outputTestMatchStringText = textareaOutputTestMatchString.value.trim(); // Remove leading and trailing whitespace
+
+            var textareaOutputTestQuery = document.getElementById('outputTestQuery');
+            var outputTestQueryText = textareaOutputTestQuery.value.trim(); // Remove leading and trailing whitespace
+
+
+            if (outputTestQueryText === '' ){
+                $("#outputTestQueryError").text("Evaluation option 2(i) requires SQL Statement.").show();
+                return false;
+            }
+            if (outputTestMatchStringText === '') {
+                $("#outputTestMatchStringError").text("Evaluation option 2(i) requires output to match for corresponding SQL.").show();
+                return false;
+            }
+
+        }
+        // individual validations based on the evaluation options selected by admin
+        if (testCasesCheck.checked){
+            // need to make sure that at least one test case is there with corresponding out put
+            var queryTextareas = $("textarea[name^='testCases[0].query']");
+            var outputTextareas = $("textarea[name^='testCases[0].output']");
+
+            // Check if there's at least one pair with text inside
+            // var hasValidPair = false;
+            var atLeastOneValidPair = false;
+
+
+            for (var i = 0; i <= testCaseCount; i++) {
+                var queryTextarea = $(`#query${i}`);
+                var outputTextarea = $(`#output${i}`);
+
+                if (queryTextarea.val().trim() !== "" && outputTextarea.val().trim() !== "") {
+                    atLeastOneValidPair = true;
+                } else if (queryTextarea.val().trim() !== "" || outputTextarea.val().trim() !== "") {
+                    // Incomplete test case
+                    $("#globalError").show().append(`Test case ${i} is incomplete. Please fill both query and output.`);
+                    return false;
+                }
+            }
+
+            if (!atLeastOneValidPair) {
+                $("#globalError").show().append("Please fill in at least one complete test case.");
+                return false; // No valid pair found, prevent form submission
+            }
+
+            // also need to make sure the user selected a custom db
+            // Get the selected option
+            var selectedOption = document.getElementById("dbId");
+            var selectedValue = selectedOption.value;
+
+            // Check if the selected value is empty (the default "Select a Custom DB" option)
+            if (selectedValue === "") {
+                // Show the error message
+                document.getElementById("selectionError").style.display = "block";
+                return false; // Prevent form submission
+            } else {
+                // Hide the error message and allow form submission
+                document.getElementById("selectionError").style.display = "none";
+                return true;
+            }
+        }
+
+        // If at least one checkbox is selected, allow form submission
+        return true;
+    }
+
+
+    // Add a click event listener to the toggle button
+    document.getElementById('logCheck').addEventListener('click', function () {
+        // Get the input block element
+        var inputBlock = document.getElementById('inputBlock');
+        // Toggle its display using the Bootstrap Collapse API
+        $(inputBlock).collapse('toggle');
+    });
+
+    document.getElementById('outPutQueryCheck').addEventListener('click', function () {
+        // Get the input block element
+        var inputBlock2 = document.getElementById('inputBlock2');
+        // Toggle its display using the Bootstrap Collapse API
+        $(inputBlock2).collapse('toggle');
+    });
+
+    document.getElementById('testCasesCheck').addEventListener('click', function () {
+        // Get the input block element
+        var inputBlock3 = document.getElementById('inputBlock3');
+        // Toggle its display using the Bootstrap Collapse API
+        $(inputBlock3).collapse('toggle');
+    });
+</script>
+
+
+<script th:inline="javascript">
+    var serverContext = [[@{/}]];
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('form').submit(function (event) {
+            register(event);
+        });
+    });
+
+    var selectedDbId;
+
+    function storeDbId(selectElement) {
+        // Get the selected value (db.id)
+        selectedDbId = selectElement.value;
+
+        // You can now use the selectedDbId variable in your JavaScript code
+        console.log("Selected DB ID: " + selectedDbId);
+
+        // var inputValue = "New Value"; // Replace with the value you want to set
+        document.getElementById("customDbId").value = selectedDbId;
+        setCustomDBIDToQueryTools(selectedDbId);
+    }
+
+
+    function register(event) {
+
+        // window.alert("i am here!");
+
+        event.preventDefault();
+        $(".alert").html("").hide();
+        $(".error-list").html("");
+
+        if (validateFormForEvaluation()) {
+            var formData = $('form').serialize();
+            console.log("Form Data");
+            console.log(formData);
+            $.post(serverContext + "task/edit", formData, function (data) {
+                if (data.message == "success") {
+
+                    $("#globalSuccess").show().append("Task Updated! <br/>");
+
+                    var idOfTask = document.getElementById("id");
+                    var redirectUrl ='/task/view/'+idOfTask.value;
+                    console.log(redirectUrl);
+                    // window.location.href = redirectUrl;
+                    // setTimeout(function () {
+                    //     // Reload the page
+                    //     location.reload();
+                    // }, 1500);
+
+                } else{
+                    $("#globalError").show().append(data.message+"<br/>");
+                }
+
+            })
+                .fail(function (data) {
+                    if (data.responseJSON.error.indexOf("InternalError") > -1) {
+                        // window.location.href = serverContext + "login?message=" + data.responseJSON.message;
+                    } else {
+                        var errors = $.parseJSON(data.responseJSON.message);
+                        $.each(errors, function (index, item) {
+                            if (item.field) {
+                                $("#" + item.field + "Error").show().append(item.defaultMessage + "<br/>");
+                            } else {
+                                $("#globalError").show().append(item.defaultMessage + "<br/>");
+                            }
+
+                        });
+                    }
+                });
+        }
+    }
+
+</script>
+
+
+</body>
+
+</html>

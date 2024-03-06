@@ -1,0 +1,549 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+
+    <title>Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" th:href="@{/app-assets/css/sb-admin-2.min.css}">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="user_sidebar :: user_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div class="d-flex flex-column" id="content-wrapper">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="user_navbar :: user_navbar"></div>
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+
+                <div class="modal" id="submissionsModal" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Submissions</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button" id="modal-close-2" >
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>All the submissions for the task are as follows.</p>
+                                <div style="max-height: 200px; overflow: auto;">
+                                    <table class="table table-hover"
+                                           id="submissions-list">
+                                        <thead>
+                                        <tr>
+                                            <th class="border">Submission Time</th>
+                                            <th class="border">Submission Content</th>
+                                            <th class="border">Passed?</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody> </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" id="modal-close" type="button">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+                    <div class="col-6">
+
+                        <div class="card mb-4">
+                            <div class="card-header">Progress</div>
+                            <div class="card-body">
+
+
+                                <p id="timeLeftP" th:text="'Time left: ' + ${dashData.timeLeft} + '%'"></p>
+                                <div class="progress">
+                                    <div aria-valuemax="100"
+                                         aria-valuemin="0"
+                                         class="progress-bar progress-bar-striped progress-bar-animated bg-danger" id="timeleftProgressbar" role="progressbar"
+                                         th:aria-valuenow="${timeLeft}"></div>
+
+                                </div>
+
+                                <p id="completedTasksPercentage" th:text="'Completed tasks: ' + ${dashData.solvedTasksPercentage} + '%'" style="margin-top: 20px;"></p>
+                                <div class="progress">
+                                    <div aria-valuemax="100" id="tasksProgressbar"
+                                         aria-valuemin="0" aria-valuenow="80" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card mb-4">
+                            <div class="card-header">Your score</div>
+                            <div class="card-body">
+<!--                                <h1 id= "positionDash" th:text="${#numbers.formatDecimal(dashData.position, 0, 'ordinal')}"></h1>-->
+<!--                                <h1 id= "positionDash" th:text="${dashData.position}" th:unless="${dashData.totalPoints == 0.0}">None</h1>-->
+                                <h1 id= "scoreDash" th:text="${dashData.totalPoints}">0.0</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card mb-4">
+                            <div class="card-header">Position</div>
+                            <div class="card-body">
+<!--                                    <h1 id= "solvedTasks" th:text="${#numbers.formatDecimal(dashData.position, 0, 'ordinal')}"></h1>-->
+                                    <h1 id= "positionDash" th:text="${dashData.position}" th:unless="${dashData.totalPoints == 0.0}">None</h1>
+<!--                                <h1 id="solvedTasks" th:text="${dashData.solvedTasks} + '%'"></h1>-->
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div>
+                            <div class="card mb-4">
+                                <div class="card-header">Instructions</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Please go to the <a href="/tasks">Hackathon Tasks</a> to view hackathon tasks.</li>
+                                        <li>As soon as the hackathon begins, you should be able to see the tasks.</li>
+                                        <li>Please go to "submission" to find the online code editor.</li>
+                                        <li>Use the code editor provided with the online interface to submit each
+                                            code.
+                                        </li>
+                                    </ul>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div>
+
+                            <div class="card mb-4">
+                                <div class="card-header"> Your Database Details</div>
+                                <div class="card-body">
+                                    <p th:text="'Database Name: ' + ${userDB}"></p>
+                                    <p th:text="'Database User Name: ' + ${userDBUser}"></p>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6" >
+                        <div class="card mb-4">
+                            <div class="card-header">Past Hackathons</div>
+                            <div class="card-body" style="max-height: 400px; overflow-y: auto; overflow-x: auto;">
+                            <div class="table-responsive" th:fragment="pasHackathon-list">
+                                <table id="pasHackathon-list"
+                                       class="table table-striped table-hover">
+                                    <thead>
+                                    <tr>
+
+                                        <th class="border">Title</th>
+                                        <th class="border">Start Date &amp; Time</th>
+                                        <th class="border">End Date &amp; Time</th>
+                                        <th class="border">Action</th>
+                                        <!-- <th>Contact Person Name</th> -->
+                                        <!-- <th>Joining Date</th> -->
+                                        <!-- <th>Actions</th> -->
+                                    </tr>
+                                    </thead>
+                                    <tbody th:if="${#lists.isEmpty(previousHackathons)}">
+                                    <tr>
+
+                                        <td class="border" colspan="4" style="text-align:center">No Hackathon to show</td>
+                                    </tr>
+
+                                    </tbody>
+                                    <tbody>
+
+                                    <tr th:if="${previousHackathons != null}"
+                                        th:each="hackathon : ${previousHackathons}">
+
+                                        <td class="border" th:text="${hackathon.title}">
+
+                                        </td>
+                                        <td class="border" th:text="${hackathon.startDateTime}">
+
+
+                                        </td>
+                                        <td class="border" th:text="${hackathon.endDateTime}"></td>
+
+
+                                        <td class="border">
+                                            <a th:href="@{'/hackathon/viewreport/'+${hackathon.id}}">
+                                                <button class="btn btn-primary btn-sm" >View Report</button> </a>
+
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card mb-4">
+                            <div class="card-header">Current Hackathon: Your Score Breakdown</div>
+                            <div class="card-body">
+
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+<!--                                        <th scope="col">#</th>-->
+                                        <th scope="col">Task</th>
+                                        <th scope="col">Completion</th>
+                                        <th scope="col">Attempts</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Points</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody id="table-body" th:if="${#lists.isEmpty(dashData.breakDownItems)}">
+                                    <tr>
+
+                                        <td colspan="5" style="text-align:center">No Ongoing Hackathon</td>
+                                    </tr>
+
+                                    </tbody>
+
+                                    <tbody th:unless="${#lists.isEmpty(dashData.breakDownItems)}" >
+                                    <tr th:each="breakDown : ${dashData.breakDownItems}">
+<!--                                        <th scope="row">1</th>-->
+                                        <td th:text="${breakDown.taskTitle}">XYZ</td>
+                                        <td th:text="${breakDown.complete}">Completed</td>
+                                        <td th:text="${breakDown.attempts} + '/' + ${breakDown.maxAttempts}">3/5
+                                            <button class="btn btn-outline-primary btn-sm" th:attr="onclick=|openModal('${breakDown.taskId}')|" >Delete
+                                            </button>
+                                        </td>
+                                        <td th:text="${breakDown.timeTaken}">12:36</td>
+                                        <td th:text="${breakDown.points}">23423423</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="5" style="text-align:center; background-color:rgb(255,250,202);" th:text="'Total Points: ' + ${dashData.totalPoints}"></td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!--<script>-->
+<!--    html, body-->
+<!--    {-->
+<!--        100 %;-->
+<!--        0;-->
+<!--    }-->
+
+<!--    .wrapper-->
+<!--    {-->
+<!--        min - height-->
+<!--    :-->
+<!--        100 %;-->
+<!--        flex;-->
+<!--        flex - direction-->
+<!--    :-->
+<!--        column;-->
+<!--    }-->
+
+<!--    footer-->
+<!--    {-->
+<!--        flex - shrink-->
+<!--    :-->
+<!--        0;-->
+<!--    }-->
+
+<!--</script>-->
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<!-- Page level custom scripts <script th:src="@{/app-assets/vendor/chart.js/Chart.min.js}"></script>
+
+
+<script th:src="@{/app-assets/js/demo/chart-area-demo.js}"></script>
+<script th:src="@{/app-assets/js/demo/chart-pie-demo.js}"></script> -->
+<script th:inline="javascript">
+    var breakDownItems = /*[[${dashData.breakDownItems}]]*/ "";
+</script>
+<script th:inline="javascript">
+
+
+
+    var timeLeft = /*[[${dashData.timeLeft}]]*/ '100';
+    var timeLeftSec = /*[[${dashData.timeLeftSec}]]*/ '100';
+    var solvedTasksPercentage = /*[[${dashData.solvedTasksPercentage}]]*/ '100';
+    document.addEventListener('DOMContentLoaded', function () {
+        var timeleftProgressbar = document.getElementById("timeleftProgressbar");
+        var tasksProgressbar = document.getElementById("tasksProgressbar");
+        timeleftProgressbar.style.width = timeLeft + '%';
+        tasksProgressbar.style.width = solvedTasksPercentage + '%';
+
+        var timeLeftP = document.getElementById("timeLeftP");
+        const { hours, minutes } = secondsToHoursMinutes(timeLeftSec);
+        timeLeftP.textContent = "Time left: " + hours + "H: " + minutes + "M";
+    });
+
+
+    function secondsToHoursMinutes(seconds) {
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        return { hours, minutes };
+    }
+
+    // const totalSeconds = 7325; // Replace with your total seconds
+    //
+    // const { hours, minutes } = secondsToHoursMinutes(totalSeconds);
+    //
+    // console.log(`${hours} hours and ${minutes} minutes`);
+
+    function toOrdinal(number) {
+        if (typeof number !== 'number' || isNaN(number)) {
+            return '';
+        }
+
+        // Handle special cases for 11th, 12th, and 13th
+        if (number % 100 >= 11 && number % 100 <= 13) {
+            return number + 'th';
+        }
+
+        switch (number % 10) {
+            case 1:
+                return number + 'st';
+            case 2:
+                return number + 'nd';
+            case 3:
+                return number + 'rd';
+            default:
+                return number + 'th';
+        }
+    }
+    function updateDashUi(data) {
+
+        var timeleftProgressbar = document.getElementById("timeleftProgressbar");
+        var tasksProgressbar = document.getElementById("tasksProgressbar");
+        var timeLeftP = document.getElementById("timeLeftP");
+        var positionDash = document.getElementById("positionDash");
+        var scoreDash = document.getElementById("scoreDash");
+        // var solvedTasks = document.getElementById("solvedTasks");
+        var completedTasksPercentage = document.getElementById("completedTasksPercentage");
+        timeleftProgressbar.style.width = data.timeLeft + '%';
+        tasksProgressbar.style.width = data.solvedTasksPercentage + '%';
+
+        const { hours, minutes } = secondsToHoursMinutes(data.timeLeftSec);
+        timeLeftP.textContent = "Time left: " + hours + "H: " + minutes + "M";
+        positionDash.textContent = data.position; //toOrdinal();
+        scoreDash.textContent = data.totalPoints; //toOrdinal();
+        // solvedTasks.textContent = data.solvedTasks;
+
+        if (data.solvedTasksPercentage != null){
+            completedTasksPercentage.textContent = "Completed Tasks: " + data.solvedTasksPercentage + '%';
+        } else {
+
+            completedTasksPercentage.textContent = "Completed Tasks: Not Applicable Now" ;
+        }
+
+    }
+
+    function updateDash() {
+
+        $.ajax({
+            url: "/user/dash/data",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                updateDashUi(data);
+            }
+        });
+
+    }
+
+    updateDash();
+
+    // Periodic metrics update every 2 seconds
+    setInterval(function () {
+        updateDash();
+    }, 15000);
+
+
+</script>
+
+
+
+<script th:inline="javascript" >
+    var itemToDisplay = "ass";
+    // Get the modal and buttons
+    var submissionsModal;
+    var closeModalButton;
+
+    function openModal(itemId) {
+
+        console.log(itemId);
+        const submissionsModal = document.getElementById('submissionsModal');
+        submissionsModal.style.display = 'block';
+        itemToDisplay = itemId;
+
+        for (let i = 0; i < breakDownItems.length; i++) {
+            const breakDownItem = breakDownItems[i];
+            // console.log(`CustomDb ID: ${customDb.id}, Name: ${customDb.name}`);
+            // Perform any desired operations on each customDb here
+            if (breakDownItem.taskId == itemId){
+                populateTasksTable(breakDownItem.submissions);
+                break;
+            }
+        }
+
+    }
+
+    function populateTasksTable(submissions) {
+        // Find the table body where you want to display the tasks
+        const tableBody = document.querySelector('#submissions-list tbody');
+
+        // Clear the table body to remove any previous data
+        tableBody.innerHTML = '';
+
+        if (submissions.length === 0) {
+            // If there are no tasks, display a message
+            const noHackathonsRow = document.createElement('tr');
+            noHackathonsRow.innerHTML = '<td class="border" colspan="2" style="text-align:center">No Submissions.</td>';
+            tableBody.appendChild(noHackathonsRow);
+        } else {
+            // Populate the table with the filtered tasks
+            submissions.forEach(submission => {
+                const submissionRow = document.createElement('tr');
+                submissionRow.innerHTML = `
+                <td class="border">${submission.submissionTime}</td>
+                <td class="border">${submission.submittedQuery}</td>
+                <td class="border">${submission.passed}</td>
+
+            `;
+                tableBody.appendChild(submissionRow);
+            });
+        }
+    }
+
+
+    // Function to close the modal
+    function closeModal() {
+        const submissionsModal = document.getElementById('submissionsModal');
+        submissionsModal.style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        submissionsModal = document.getElementById('submissionsModal');
+        closeModalButton = document.getElementById('modal-close');
+        closeModalButton2 = document.getElementById('modal-close-2');
+
+        closeModalButton.addEventListener('click', () => {
+            closeModal();
+        });
+
+        closeModalButton2.addEventListener('click', () => {
+            closeModal();
+        });
+
+
+    });
+
+
+
+
+</script>
+
+</body>
+
+</html>
+
+
+
+

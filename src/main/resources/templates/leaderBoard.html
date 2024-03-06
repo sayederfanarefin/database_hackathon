@@ -1,0 +1,519 @@
+<div class="container-fluid" th:fragment="leader_board" xmlns:th="http://www.thymeleaf.org">
+
+
+  <!--===============================================================================================-->
+  <!--  <link rel="stylesheet" type="text/css" th:href="${vendor_timer/bootstrap/css/bootstrap.min.css">-->
+  <!--===============================================================================================-->
+  <!--  <link rel="stylesheet" type="text/css" th:href="${fonts_timer/fontawesome/css/fontawesome.min.css}">-->
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/vendor_timer/animate/animatetimer.css}" type="text/css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/vendor_timer/select2/select2.min.css}" type="text/css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/vendor_timer/countdowntime/flipclock.css}" type="text/css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" th:href="@{/app-assets/css_timer/utiltimer.css}" type="text/css">
+  <link rel="stylesheet" th:href="@{/app-assets/css_timer/maintimer.css}" type="text/css">
+
+  <style>
+    .fullscreen-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .icon {
+      font-size: 20px;
+    }
+
+    /* Full screen mode */
+    #containerxxx.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      box-shadow: none;
+      background-color: white;
+    }
+  </style>
+<!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"/>-->
+
+
+  <!--===============================================================================================-->
+
+
+  <div id="containerxxx">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 text-center">
+      <!--      <div class="p-t-34 p-b-60 respon3">-->
+      <h3 class="text-center">Time Left</h3>
+
+
+
+
+
+      <!--      </div>-->
+    </div>
+    <div class="col-md-3">
+      <div class="fullscreen-button" id="fullscreen-button">
+        <span class="icon">&#x2922;</span>
+      </div>
+    </div>
+  </div>
+
+
+    <div class="container-sm" style="text-align: center;">
+      <!-- Your content goes here -->
+      <div class="cd100 block" id="centeredDivx"></div>
+    </div>
+
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+
+
+<!--      <div class="row" th:if="${data[0].points == 0.0}">-->
+
+<!--        <div class="col-sm-4">-->
+<!--          <div class="leaderboard-card">-->
+<!--            <div class="leaderboard-card__top">-->
+<!--              <h3 class="text-center" >-&#45;&#45;</h3>-->
+<!--            </div>-->
+<!--            <div class="leaderboard-card__body">-->
+<!--              <div class="text-center">-->
+<!--                <img alt="User Img" class="circle-img mb-2" src="" >-->
+<!--                <h5 class="mb-0" >-&#45;&#45;</h5>-->
+<!--                <p class="text-muted mb-0" >@-&#45;&#45;</p>-->
+<!--                <hr>-->
+<!--                <div class="text-center">-->
+<!--                  <span><i class="fa fa-solid fa-star"></i> 2nd</span>-->
+
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-sm-4">-->
+<!--          <div class="leaderboard-card leaderboard-card&#45;&#45;first">-->
+<!--            <div class="leaderboard-card__top">-->
+<!--              <h3 class="text-center" th:text="${data[0].points}" th:unless="${#lists.isEmpty(data)}">-->
+<!--                -&#45;&#45;</h3>-->
+<!--            </div>-->
+<!--            <div class="leaderboard-card__body">-->
+<!--              <div class="text-center">-->
+<!--                <img alt="User Img" class="circle-img mb-2" th:src="${data[0].pathToProPic}" th:unless="${#lists.isEmpty(data)}">-->
+<!--                <h5 class="mb-0" th:text="${data[0].fulleName}" th:unless="${#lists.isEmpty(data)}">-->
+<!--                  -&#45;&#45;</h5>-->
+<!--                <p class="text-muted mb-0" th:text="${'@' + data[0].teamName}"-->
+<!--                   th:unless="${#lists.isEmpty(data)}">@-&#45;&#45;</p>-->
+<!--                <hr>-->
+<!--                <div class="text-center">-->
+<!--                  <span><i class="fa fa-trophy"></i> 1st</span>-->
+
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-sm-4">-->
+<!--          <div class="leaderboard-card">-->
+<!--            <div class="leaderboard-card__top">-->
+<!--              <h3 class="text-center" th:text="${data[2].points}" th:unless="${#lists.isEmpty(data)}">-->
+<!--                -&#45;&#45;</h3>-->
+<!--            </div>-->
+<!--            <div class="leaderboard-card__body">-->
+<!--              <div class="text-center">-->
+<!--                <img alt="User Img" class="circle-img mb-2" th:src="${data[2].pathToProPic}" th:unless="${#lists.isEmpty(data)}">-->
+<!--                <h5 class="mb-0" th:text="${data[2].fulleName}" th:unless="${#lists.isEmpty(data)}">-->
+<!--                  -&#45;&#45;</h5>-->
+<!--                <p class="text-muted mb-0" th:text="${'@' + data[2].teamName}"-->
+<!--                   th:unless="${#lists.isEmpty(data)}">@-&#45;&#45;</p>-->
+<!--                <hr>-->
+<!--                <div class="text-center">-->
+<!--                  <span><i class="fa fa-solid fa-star"></i> 3rd</span>-->
+
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--      </div>-->
+<!--      <div class="row" th:if="${data[0].points > 0.0}">-->
+      <div class="row" th:if="${(data != null) and (#lists.size(data) > 3)}">
+
+        <div class="col-sm-4">
+          <div class="leaderboard-card">
+            <div class="leaderboard-card__top">
+              <h3 class="text-center" th:text="${data[1].points}" th:unless="${(#lists.isEmpty(data)) or (data[1].points == 0.0)}">
+                ---</h3>
+            </div>
+            <div class="leaderboard-card__body">
+              <div class="text-center">
+                <img alt="User Img" class="circle-img mb-2" th:src="${data[1].pathToProPic}" th:unless="${(#lists.isEmpty(data)) or (data[1].points == 0.0)}">
+                <h5 class="mb-0" th:text="${data[1].fulleName}" th:unless="${(#lists.isEmpty(data)) or (data[1].points == 0.0)}">
+                  ---</h5>
+                <p class="text-muted mb-0" th:text="${'@' + data[1].teamName}"
+                   th:unless="${(#lists.isEmpty(data)) or (data[1].points == 0.0)}">@---</p>
+                <hr>
+                <div class="text-center">
+                  <span><i class="fa fa-solid fa-star"></i> 2nd</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="leaderboard-card leaderboard-card--first">
+            <div class="leaderboard-card__top">
+              <h3 class="text-center" th:text="${data[0].points}" th:unless="${(#lists.isEmpty(data)) or (data[0].points == 0.0)}">
+                ---</h3>
+            </div>
+            <div class="leaderboard-card__body">
+              <div class="text-center">
+                <img alt="User Img" class="circle-img mb-2" th:src="${data[0].pathToProPic}" th:unless="${(#lists.isEmpty(data)) or (data[0].points == 0.0)}">
+                <h5 class="mb-0" th:text="${data[0].fulleName}" th:unless="${(#lists.isEmpty(data)) or (data[0].points == 0.0)}">
+                  ---</h5>
+                <p class="text-muted mb-0" th:text="${'@' + data[0].teamName}"
+                   th:unless="${(#lists.isEmpty(data)) or (data[0].points == 0.0)}">@---</p>
+                <hr>
+                <div class="text-center">
+                  <span><i class="fa fa-trophy"></i> 1st</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="leaderboard-card">
+            <div class="leaderboard-card__top">
+              <h3 class="text-center" th:text="${data[2].points}" th:unless="${(#lists.isEmpty(data)) or (data[2].points == 0.0)}">
+                ---</h3>
+            </div>
+            <div class="leaderboard-card__body">
+              <div class="text-center">
+                <img alt="User Img" class="circle-img mb-2" th:src="${data[2].pathToProPic}" th:unless="${(#lists.isEmpty(data)) or (data[2].points == 0.0)}">
+                <h5 class="mb-0" th:text="${data[2].fulleName}" th:unless="${(#lists.isEmpty(data)) or (data[2].points == 0.0)}">
+                  ---</h5>
+                <p class="text-muted mb-0" th:text="${'@' + data[2].teamName}"
+                   th:unless="${(#lists.isEmpty(data)) or (data[2].points == 0.0)}">@---</p>
+                <hr>
+                <div class="text-center">
+                  <span><i class="fa fa-solid fa-star"></i> 3rd</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+  <!--  <hr/>-->
+
+  <!--  <h3 class="text-center">All Users</h3>-->
+
+  <div class="row">
+
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <table class="table table-hover table-sm">
+        <thead>
+        <tr>
+          <th>Position</th>
+          <th>User</th>
+          <th>Points</th>
+        </tr>
+        </thead>
+
+
+<!--        <tbody id="table-body" th:if="${data == null}">-->
+<!--        <tr>-->
+
+<!--          <td colspan="3" style="text-align:center">No Ongoing Hackathon</td>-->
+<!--        </tr>-->
+
+<!--        </tbody>-->
+
+        <tbody id="table-body" >
+
+        <tr class="" th:classappend="${activeUserId == leaderelement.userIdOriginal ? 'table-active' : ''}"
+            th:each="leaderelement : ${data}"
+            th:if="${data != null}">
+
+
+          <td>
+            <div class="d-flex align-items-baseline">
+              <h4 class="mr-1" style="padding-left: 10px;" th:text="${leaderelement.position}"></h4>
+            </div>
+          </td>
+
+          <td>
+            <div class="d-flex align-items-center">
+              <img alt="User Img" class="circle-img circle-img--small mr-2"
+                   th:src="${leaderelement.pathToProPic}">
+              <div class="user-info__basic">
+                <h5 class="mb-0" th:text="${leaderelement.fulleName}"></h5>
+                <p class="text-muted mb-0" th:text="${'@' + leaderelement.teamName}"></p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="d-flex align-items-baseline">
+              <h4 class="mr-1" th:text="${leaderelement.points}"></h4>
+            </div>
+          </td>
+
+
+        </tr>
+
+
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-md-1"></div>
+
+  </div>
+  </div>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/jquery/jquery-3.2.1.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/bootstrap/js/popper.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/bootstrap/js/bootstrap.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/select2/select2.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/flipclock.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment-timezone.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/moment-timezone-with-data.min.js}"></script>
+  <script th:src="@{/app-assets/vendor_timer/countdowntime/countdowntime.js}"></script>
+  <script th:inline="javascript">
+
+    var leftHour = /*[[${timLeftHour}]]*/ 0;
+    var leftDay = /*[[${timLeftDay}]]*/ 0;
+    var leftMinute = /*[[${timLeftMin}]]*/ 0;
+    var leftSecond = /*[[${timLeftSec}]]*/ 0;
+    var leftYear = /*[[${timLeftYear}]]*/ 0;
+    var leftMonth = /*[[${timLeftMonth}]]*/ 0;
+
+  </script>
+
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/vendor_timer/tilt/tilt.jquery.min.js}"></script>
+  <script>
+    $('.js-tilt').tilt({
+      scale: 1.1
+    })
+
+
+  </script>
+  <!--===============================================================================================-->
+  <script th:src="@{/app-assets/js_timer/main.js}"></script>
+
+  <script>
+
+    var fanc = $('.cd100');
+    fanc.countdown100({
+      endtimeYear: 0,
+      endtimeMonth: 0,
+      endtimeDate: 0,
+      endtimeHours: 0,
+      endtimeMinutes: 0,
+      endtimeSeconds: 10,
+      timeZone: "",
+    });
+
+    function setClock(leftYear, leftMonth, leftDay, leftHour, leftMinute, leftSecond) {
+
+      fanc.countdown100({
+        endtimeYear: leftYear,
+        endtimeMonth: leftMonth,
+        endtimeDate: leftDay,
+        endtimeHours: leftHour,
+        endtimeMinutes: leftMinute,
+        endtimeSeconds: leftSecond,
+        timeZone: "",
+      });
+
+    }
+    setClock(leftYear, leftMonth, leftDay, leftHour, leftMinute, leftSecond);
+
+  </script>
+  <script>
+    function updateLeaderBoard() {
+      $.ajax({
+        url: "/leaderboard/rest",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          setClock(data.timLeftYear, data.timLeftMonth, data.timLeftDay,
+                  data.timLeftHour, data.timLeftMin, data.timLeftSec);
+
+          updateTable(data.data, data.activeUserId);
+
+        }
+      });
+    }
+
+
+    function updateTable(updatedList, activeUserId) {
+      // Clear the existing table rows
+      var tableBody = document.getElementById('table-body');
+
+      var rowCount = tableBody.rows.length;
+
+  // Loop through and remove all rows
+      for (var i = rowCount - 1; i >= 0; i--) {
+        tableBody.deleteRow(i);
+      }
+
+
+      // Rebuild the table with the updated data
+      updatedList.forEach(function (item) {
+        var row = document.createElement('tr');
+
+        if (activeUserId == item.userIdOriginal) {
+          row.setAttribute('class', 'table-active');
+        }
+
+        var idCell1 = document.createElement('td');
+
+        var nameDiv1 = document.createElement('div');
+        nameDiv1.setAttribute('class', 'd-flex align-items-baseline');
+        nameDiv1.style.paddingLeft = '10px';
+
+        var nameh4_1 = document.createElement('h4');
+        nameh4_1.setAttribute('class', 'mr-1');
+        nameh4_1.textContent = item.position;
+        nameDiv1.appendChild(nameh4_1);
+
+        idCell1.appendChild(nameDiv1);
+
+        row.appendChild(idCell1);
+
+        /// second col--------------------------------------------------
+
+        var idCell2 = document.createElement('td');
+
+        var nameDiv2 = document.createElement('div');
+        nameDiv2.setAttribute('class', 'd-flex align-items-center');
+
+        var imageElement = document.createElement('img');
+        imageElement.src = item.pathToProPic;
+        imageElement.setAttribute('class', 'circle-img circle-img--small mr-2');
+        imageElement.setAttribute('alt', 'User Img');
+
+        nameDiv2.appendChild(imageElement);
+
+        var nameDiv3 = document.createElement('div');
+        nameDiv3.setAttribute('class', 'user-info__basic');
+
+        var nameh5_2 = document.createElement('h5');
+        nameh5_2.setAttribute('class', 'mb-0');
+        nameh5_2.textContent = item.fulleName;
+        nameDiv3.appendChild(nameh5_2);
+
+
+        var p_2 = document.createElement('p');
+        p_2.setAttribute('class', 'text-muted mb-0');
+        p_2.textContent = item.teamName;
+        nameDiv3.appendChild(p_2);
+
+
+        nameDiv2.appendChild(nameDiv3);
+        idCell2.appendChild(nameDiv2);
+
+        row.appendChild(idCell2);
+
+
+        /// third col--------------------------------------------------
+
+
+        var idCell3 = document.createElement('td');
+
+        var nameDiv3 = document.createElement('div');
+        nameDiv3.setAttribute('class', 'd-flex align-items-baseline');
+        // nameDiv3.setAttribute('class', 'align-items-baseline');
+
+        var nameh4_3 = document.createElement('h4');
+        nameh4_3.setAttribute('class', 'mr-1');
+        nameh4_3.textContent = item.points;
+        nameDiv3.appendChild(nameh4_3);
+
+        idCell3.appendChild(nameDiv3);
+
+        row.appendChild(idCell3);
+
+        tableBody.appendChild(row);
+
+
+      });
+    }
+
+
+    // Initial metrics update
+    updateLeaderBoard();
+
+    // Periodic metrics update every 2 seconds
+    setInterval(function () {
+      updateLeaderBoard();
+    }, 5000);
+
+
+
+    const fullscreenButton = document.getElementById('fullscreen-button');
+    const container = document.getElementById('containerxxx');
+
+    fullscreenButton.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        container.requestFullscreen();
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      container.classList.toggle('fullscreen', !!document.fullscreenElement);
+    });
+
+
+  </script>
+
+
+
+<!--  <script>-->
+<!--    window.addEventListener('load', function () {-->
+<!--      // Get a reference to the dynamically generated div-->
+<!--      var dynamicDiv = document.getElementById('centeredDivx');-->
+
+<!--      // Calculate the left margin or translateX value to center the div-->
+<!--      var containerWidth = document.getElementById('containerxxx').offsetWidth;-->
+<!--      var divWidth = dynamicDiv.offsetWidth;-->
+<!--      var marginLeft = (containerWidth - divWidth) / 4;-->
+
+<!--      // Apply the margin or translateX value to center the div horizontally-->
+<!--      // console.log("containerWidth")-->
+<!--      // console.log(containerWidth)-->
+<!--      // console.log("divWidth")-->
+<!--      // console.log(divWidth)-->
+<!--      // console.log("marginLeft")-->
+<!--      // console.log(marginLeft)-->
+<!--      dynamicDiv.style.marginLeft = marginLeft + 'px';-->
+<!--      // Or use CSS transforms for centering:-->
+<!--      // dynamicDiv.style.transform = 'translateX(' + marginLeft + 'px)';-->
+<!--    });-->
+<!--  </script>-->
+
+</div>
+
+

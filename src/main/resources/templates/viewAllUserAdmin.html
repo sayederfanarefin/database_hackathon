@@ -1,0 +1,331 @@
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>View All Users | Dashboard</title>
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/app-assets/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/app-assets/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/app-assets/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/app-assets/site.webmanifest}">
+
+    <!-- Custom fonts for this template-->
+    <link th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link th:href="@{/app-assets/css/sb-admin-2.min.css}" rel="stylesheet">
+
+    <style>
+        .xyxx{
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="admin_sidebar :: admin_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+
+            <div th:replace="admin_navbar :: admin_navbar"></div>
+
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="modal" id="loadingModal" tabindex="-1" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Running... Please wait.</span>
+                                </div>
+                                <p>Deleting... Please wait.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal" id="deleteModal" role="dialog" style="position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Delete Item</h5>
+                                <button aria-label="Close" class="close" data-dismiss="modal" type="button" id="modal-close-2" >
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" id="modal-close" type="button">No</button>
+                                <button class="btn btn-danger" id="confirmDelete" type="button">Yes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <span id="globalError" class="alert alert-danger col-sm-12 align-items-center" style="display:none">Can not delete item. Please try again later.</span>
+                    <span id="globalSuccess" class="alert alert-success col-sm-12 align-items-center" style="display:none">User Deleted!</span>
+
+                </div>
+
+
+                <div class="table-responsive" th:fragment="user-list">
+                    <table class="table table-striped table-hover" id="invoices-list">
+<!--                           class="table table-white-space table-bordered row-grouping display no-wrap icheck table-middle">-->
+                        <thead>
+                        <tr>
+
+                            <th>Full Name</th>
+                            <th>Team Name</th>
+                            <th>DB Name</th>
+                            <th>DB User Name</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                            <!-- <th>Contact Person Name</th> -->
+                            <!-- <th>Joining Date</th> -->
+                            <!-- <th>Actions</th> -->
+                        </tr>
+                        </thead>
+                        <tbody th:if="${#lists.isEmpty(data.content)}">
+                        <tr>
+
+                            <td colspan="5" style="text-align:center">No Users to show</td>
+                        </tr>
+
+                        </tbody>
+                        <tbody>
+
+                        <tr th:if="${data != null}"
+                            th:each="user : ${data.content}">
+
+                            <td th:text="${user.getFullName()}">
+
+                            </td>
+                            <td th:text="${user.teamName}"></td>
+
+                            <!-- <td th:text="${employee.company.name}"></td> -->
+                            <td th:text="${user.databaseName}"></td>
+                            <td th:text="${user.databaseUserName}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td>
+                                <a th:href="@{'/users/view/'+${user.id}}">
+                                    <button class="btn btn-primary btn-sm" >View</button> </a>
+
+                                <a th:href="@{'/users/edit/'+${user.id}}">
+                                    <button class="btn btn-warning btn-sm" >Edit</button> </a>
+
+<!--                                <a th:href="@{'/users/delete/'+${user.id}}">-->
+<!--                                    <button class="btn btn-danger btn-sm" >Delete</button> </a>-->
+                                <button class="btn btn-danger btn-sm" th:attr="onclick=|openModal('${user.id}')|" >Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    <div th:if="${data.totalPages != 0}"
+                         class="form-group col-md-11 pagination-centered">
+                        <ul class="pagination justify-content-center">
+                            <!-- <li th:class="${data.number == 0} ? disabled"><a
+                                class="page-link" th:onclick="'javascript:loadEmployee(\''+ ${data.number} +'\');'">«</a></li> -->
+                            <li th:class="${data.number == 0} ? disabled"><a
+                                    class="page-link"
+                                    th:href="'/users/view/all/'+ ${data.number-1}">Previous</a>
+                            </li>
+
+                            <li  th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                                <a class="page-link" th:href="'/users/view/all/'+ ${page-1}" th:text="${page}" th:classappend="${data.number == (page-1 )} ? 'pointer-disabled xyxx'" ></a>
+                            </li>
+
+
+                            <li
+                                    th:class="${data.number == (data.totalPages-1)} ? disabled">
+                                <a class="page-link"
+                                   th:href="'/users/view/all/'+ ${data.number + 1}" >Next</a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+
+        <div th:replace="delete_modal :: delete_modal"></div>
+
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<script th:inline="javascript">
+    var serverContext = [[@{/}]];
+
+</script>
+
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<!-- Page level custom scripts <script th:src="@{/app-assets/vendor/chart.js/Chart.min.js}"></script>
+
+
+<script th:src="@{/app-assets/js/demo/chart-area-demo.js}"></script>
+<script th:src="@{/app-assets/js/demo/chart-pie-demo.js}"></script> -->
+
+
+<script th:inline="javascript" >
+
+    var itemToDelete = "ass";
+
+    // Get the modal and buttons
+    var deleteModal;
+    var deleteButtons;
+    var confirmDeleteButton;
+    var closeModalButton;
+
+
+
+    function openModal(itemId) {
+
+        console.log(itemId);
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.style.display = 'block';
+        itemToDelete = itemId;
+
+    }
+
+    function deleteRow(rowId) {
+        var row = document.getElementById(rowId); // Get the row element by ID
+        if (row) {
+            row.parentNode.removeChild(row); // Remove the row
+        }
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        deleteModal = document.getElementById('deleteModal');
+        deleteButtons = document.getElementById('delete-button');
+        confirmDeleteButton = document.getElementById('confirmDelete');
+        closeModalButton = document.getElementById('modal-close');
+        closeModalButton2 = document.getElementById('modal-close-2');
+
+        closeModalButton.addEventListener('click', () => {
+            closeModal();
+        });
+
+        closeModalButton2.addEventListener('click', () => {
+            closeModal();
+        });
+
+        confirmDeleteButton.addEventListener('click', () => {
+
+            closeModal();
+            const loadingModal = document.getElementById('loadingModal');
+            loadingModal.style.display='block';
+
+            var formData = null;
+            console.log("posting user delete");
+            $.post(serverContext + "user/delete/" + itemToDelete,formData ,function(data){
+                if(data.message == "success"){
+                    loadingModal.style.display='none';
+                    deleteRow("item-"+ itemToDelete);
+                    $("#globalSuccess").show();
+                    setTimeout(function() {
+                        // function code goes here
+                        $("#globalSuccess").hide();
+                    }, 3000);
+                }
+
+            })
+                .fail(function(data) {
+                    loadingModal.style.display='none';
+                    $("#globalError").show();
+                    setTimeout(function() {
+                        // function code goes here
+                        $("#globalError").hide();
+                    }, 3000);
+                });
+
+        });
+
+
+    });
+
+
+
+
+</script>
+</body>
+
+</html>

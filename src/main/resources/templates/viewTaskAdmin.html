@@ -1,0 +1,476 @@
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta content="" name="description">
+    <meta content="" name="author">
+
+    <title>Task Details | Dashboard</title>
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/app-assets/apple-touch-icon.png}">
+    <link rel="icon" sizes="32x32" th:href="@{/app-assets/favicon-32x32.png}" type="image/png">
+    <link rel="icon" sizes="16x16" th:href="@{/app-assets/favicon-16x16.png}" type="image/png">
+    <link rel="manifest" th:href="@{/app-assets/site.webmanifest}">
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" th:href="@{/app-assets/vendor/fontawesome-free/css/all.min.css}" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" th:href="@{/app-assets/css/sb-admin-2.min.css}">
+
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/themes/prism-coy-without-shadows.css" rel="stylesheet">
+
+    <!-- Optional: Prism.js Line Numbers CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/plugins/line-numbers/prism-line-numbers.min.css"
+          rel="stylesheet">
+
+
+    <style>
+        /* Set the background color for the code block */
+        pre {
+            background-color: #efefef;
+        }
+
+        /* Set the text color for the code */
+        /*code {*/
+        /*    color: #f8f8f8;*/
+        /*}*/
+    </style>
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <div th:replace="admin_sidebar :: admin_sidebar"></div>
+
+    <!-- Content Wrapper -->
+    <div class="d-flex flex-column" id="content-wrapper">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <div th:replace="admin_navbar :: admin_navbar"></div>
+            <!-- Begin Page Content -->
+
+            <div class="modal" id="loadingModal" role="dialog" style="position: fixed;
+                                                                        top: 0;
+                                                                        left: 0;
+                                                                        z-index: 1040;
+                                                                        width: 100vw;
+                                                                        height: 100vh;
+                                                                        background-color: rgba(0, 0, 0, 0.4);
+                                                                        backdrop-filter: blur(15px);" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Running... Please wait.</span>
+                            </div>
+                            <p>Deleting Task... Please wait.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="deleteModal" role="dialog" style="position: fixed;
+                                                                            top: 0;
+                                                                            left: 0;
+                                                                            z-index: 1040;
+                                                                            width: 100vw;
+                                                                            height: 100vh;
+                                                                            background-color: rgba(0, 0, 0, 0.4);
+                                                                            backdrop-filter: blur(15px);" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Task</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" id="modal-close-2"
+                                    type="button">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete? The task will be removed from the following hackathon(s). You may need to add other tasks to the affected hackathons.</p>
+                            <div style="max-height: 200px; overflow: auto;">
+
+                                <table class="table table-hover"
+                                       id="invoices-list">
+                                    <thead>
+                                    <tr>
+                                        <th class="border">Title</th>
+                                        <th class="border">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody th:if="${#lists.isEmpty(task.hackathons)}">
+                                    <tr>
+                                        <td class="border" colspan="2" style="text-align:center">No Hackathons to show</td>
+                                    </tr>
+
+                                    </tbody>
+                                    <tbody>
+
+                                    <tr th:each="hackathon : ${task.hackathons}" th:id="'item-hackathon-'+${hackathon.id}"
+                                        th:if="${task != null}">
+
+                                        <td class="border" th:text="${hackathon.title}"></td>
+
+                                        <td class="border">
+                                            <a th:href="@{'/hackathon/view/'+${hackathon.id}}">
+                                                <button class="btn btn-outline-primary btn-sm">View</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <input type="checkbox" id="deleteHack">
+                            <label for="deleteHack">Delete Hackathons, where this is the only task. </label>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" id="modal-close" type="button">No</button>
+                            <button class="btn btn-danger" id="confirmDelete" type="button">Yes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <span class="alert alert-danger col-sm-12 align-items-center" id="globalError" style="display:none">Can not delete task. Please try again later.</span>
+                <span class="alert alert-success col-sm-12 align-items-center" id="globalSuccess" style="display:none">Task Deleted!</span>
+
+            </div>
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card mb-4">
+
+                            <a aria-expanded="true" class="card-header" data-toggle="collapse"
+                               href="#task-basic" role="button"><h6 class="m-0 font-weight-bold text-primary">Basic
+                                Information</h6></a>
+                            <div class="collapse show" id="task-basic">
+
+                                <div class="card-body">
+
+                                    <h3 th:text="'Title: ' + ${task.title}">Title</h3>
+
+                                    <br/>
+                                    <h4><b>Description</b></h4>
+                                    <hr/>
+                                    <div style="max-height: 200px; overflow: auto;">
+                                        <p class="bg-light" style="white-space: pre-line;"
+                                           th:text="${task.description}"></p>
+                                    </div>
+
+
+                                    <br/>
+                                    <h4><b>Private Notes</b></h4>
+                                    <p>Private Notes can be viewed by Admins only.</p>
+                                    <hr/>
+
+                                    <div style="max-height: 200px; overflow: auto;">
+                                        <p class="bg-light" style="white-space: pre-line;"
+                                           th:text="${task.privateNotes}"
+                                           th:unless="${#strings.isEmpty(task.privateNotes)}"></p>
+                                        <p class="bg-light" style="white-space: pre-line;"
+                                           th:if="${#strings.isEmpty(task.privateNotes)}">Not private notes.</p>
+                                    </div>
+
+
+                                </div>
+                                <div class="card-footer">
+                                    <h6 th:text="'Maximum Allowed Attempts: '+${task.maxAllowedAttempts}">Maximum
+                                        Allowed Attempts: </h6>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <a aria-expanded="true" class="card-header" data-toggle="collapse"
+                               href="#hackathon-evaluation" role="button"><h6 class="m-0 font-weight-bold text-primary">
+                                Evaluation</h6></a>
+                            <div class="collapse show" id="hackathon-evaluation">
+
+                                <div class="card-body">
+
+                                    <div th:if="${task.outPutQueryCheck}">
+                                        <h6>Evaluation type: Output Test</h6>
+                                        <h6>Output Test Query:</h6>
+                                        <pre class="line-numbers" style="max-height: 300px;"> <code class="language-sql"
+                                                                                                    th:text="${task.outputTestQuery}"></code></pre>
+                                        <br/>
+                                        <h6>Output Test Query Matching String:</h6>
+
+                                        <div style="max-height: 200px; overflow: auto;">
+                                            <p class="bg-light" style="white-space: pre-line;"
+                                               th:text="${task.outputTestMatchString}"></p>
+                                        </div>
+
+                                        <br/>
+                                    </div>
+
+                                    <div th:if="${task.logCheck}">
+                                        <h6>Evaluation type: Full query to match with User's Submission</h6>
+                                        <pre class="line-numbers" style="max-height: 300px;"><code class="language-sql"
+                                                                                                   th:text="${task.fullQueryToSearchFor}"></code></pre>
+                                    </div>
+
+                                    <div th:if="${task.testCasesCheck}">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th class="border" colspan="2">Evaluation type: Test Cases</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="border">Query Type</td>
+                                                <td class="border">Custom DB</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border" th:text="${task.queryType}">Column 2</td>
+                                                <td class="border"><a th:href="@{'/customdb/view/'+${customDb.id}}"
+                                                                      th:if="${customDb != null}">
+                                                    <p th:if="${customDb != null}" th:text="${customDb.name}"></p></a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <!--                                        <th scope="col">#</th>-->
+                                                <th class="border" scope="col">Test Case</th>
+                                                <th class="border" scope="col">Output</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody id="table-body" th:if="${#lists.isEmpty(task.testCases)}">
+                                            <tr>
+                                                <td class="border" colspan="2" style="text-align:center">No Data</td>
+                                            </tr>
+
+                                            </tbody>
+
+                                            <tbody th:unless="${#lists.isEmpty(task.testCases)}">
+                                            <tr th:each="testcase : ${task.testCases}">
+
+                                                <td class="border"><code class="language-sql"
+                                                                         th:text="${testcase.query}"></code></td>
+                                                <td class="border" th:text="${testcase.output}">Output</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card mb-4">
+
+                            <a aria-expanded="true" class="card-header" data-toggle="collapse"
+                               href="#task-hackathon" role="button"><h6 class="m-0 font-weight-bold text-primary">
+                                Hackathons Associated with this Task</h6></a>
+                            <div class="collapse show" id="task-hackathon">
+
+                                <div class="card-body">
+
+
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th class="border">Hackathon Name</th>
+                                            <th class="border">Start Date</th>
+                                            <th class="border">End Date</th>
+                                            <th class="border">Action</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody th:if="${#lists.isEmpty(task.hackathons)}">
+                                        <tr>
+                                            <td class="border" colspan="4" style="text-align: center;">No Hackathons
+                                                Associated yet.
+                                            </td>
+                                        </tr>
+
+                                        </tbody>
+                                        <tbody th:unless="${#lists.isEmpty(task.hackathons)}">
+
+
+                                        <tr th:each="hackathon : ${task.hackathons}">
+                                            <td class="border" th:text="${hackathon.title}">Column 2</td>
+                                            <td class="border" th:text="${hackathon.startDateTime}">Column 2</td>
+                                            <td class="border" th:text="${hackathon.endDateTime}">Column 2</td>
+                                            <td class="border"><a th:href="@{'/hackathon/view/'+${hackathon.id}}">
+                                                <button class="btn btn-outline-primary" type="button">
+                                                    View
+                                                </button>
+                                            </a></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                                <div class="card-footer">
+                                    <h6 th:text="'Maximum Allowed Attempts: '+${task.maxAllowedAttempts}">Maximum
+                                        Allowed Attempts: </h6>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-6">
+                        <a th:href="@{'/task/edit/'+${task.id}}">
+                            <button class="btn btn-info btn-block">Edit</button>
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <button class="btn btn-danger btn-block" th:attr="onclick=|openModal('${task.id}')|" >Delete
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+         <footer th:replace="footer :: footer"></footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<script th:inline="javascript">
+    var serverContext = [[@{/}]];
+
+</script>
+<!-- Bootstrap core JavaScript-->
+
+<script th:src="@{/app-assets/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/app-assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Core plugin JavaScript-->
+<script th:src="@{/app-assets/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+<!-- Custom scripts for all pages-->
+<script th:src="@{/app-assets/js/sb-admin-2.min.js}"></script>
+
+<!-- Page level plugins -->
+<!-- Page level custom scripts <script th:src="@{/app-assets/vendor/chart.js/Chart.min.js}"></script>
+
+
+<script th:src="@{/app-assets/js/demo/chart-area-demo.js}"></script>
+<script th:src="@{/app-assets/js/demo/chart-pie-demo.js}"></script> -->
+
+<!-- Prism.js JS (you can use a CDN like the one below) -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/prism.min.js"></script>
+
+<!-- Optional: Prism.js Line Numbers JS -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+<script>
+
+    function openModal(itemId) {
+
+        console.log(itemId);
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.style.display = 'block';
+        itemToDelete = itemId;
+
+    }
+
+
+    function closeModal() {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.style.display = 'none';
+    }
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        deleteModal = document.getElementById('deleteModal');
+        deleteButtons = document.getElementById('delete-button');
+        confirmDeleteButton = document.getElementById('confirmDelete');
+        closeModalButton = document.getElementById('modal-close');
+        closeModalButton2 = document.getElementById('modal-close-2');
+
+        closeModalButton.addEventListener('click', () => {
+            closeModal();
+        });
+
+        closeModalButton2.addEventListener('click', () => {
+            closeModal();
+        });
+
+        confirmDeleteButton.addEventListener('click', () => {
+            closeModal();
+            const loadingModal = document.getElementById('loadingModal');
+            loadingModal.style.display='block';
+            var formData = null;
+            var checkboxDeleteHack = document.getElementById("deleteHack");
+            var isCheckedDeleteHack = checkboxDeleteHack.checked;
+            var urlToDelete = serverContext + "task/delete/" + itemToDelete+ "/" + isCheckedDeleteHack ;
+
+            $.post(urlToDelete,formData ,function(data){
+                if(data.message == "success"){
+                    loadingModal.style.display='none';
+                    // Scroll to the top of the page with smooth behavior (modern browsers)
+                    window.scroll({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                    $("#globalSuccess").show();
+                    setTimeout(function() {
+                        // function code goes here
+                        $("#globalSuccess").hide();
+                    }, 10000);
+                    window.location.href = '/task/view/all';
+                }
+            }).fail(function(data) {
+                    loadingModal.style.display='none';
+                    $("#globalError").show();
+                    setTimeout(function() {
+                        // function code goes here
+                        $("#globalError").hide();
+                    }, 3000);
+                });
+        });
+    });
+
+
+
+</script>
+</body>
+
+</html>

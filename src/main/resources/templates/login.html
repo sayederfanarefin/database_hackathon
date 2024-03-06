@@ -1,0 +1,144 @@
+<html>
+
+<head>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"/>
+    <title >Login | Hackathon</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script th:inline="javascript">
+	function validate() {
+        if (document.f.username.value == "" && document.f.password.value == "") {
+            alert(/*[[#{message.username} + #{message.password}]]*/);
+            document.f.username.focus();
+            return false;
+        }
+        if (document.f.username.value == "") {
+            alert(/*[[#{message.username}]]*/);
+            document.f.username.focus();
+            return false;
+        }
+        if (document.f.password.value == "") {
+            alert(/*[[#{message.password}]]*/);
+            document.f.password.focus();
+            return false;
+        }
+    }
+    
+</script>
+<style type="text/css">
+/*.wrapper{width:500px;margin-left:auto;margin-right:auto}*/
+/*label{padding-left:0 !important}*/
+
+body {
+    background: #007bff;
+    background: linear-gradient(to right, #0062E6, #33AEFF);
+}
+
+.btn-login {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 0.75rem 1rem;
+}
+
+.btn-google {
+    color: white !important;
+    background-color: #ea4335;
+}
+
+.btn-facebook {
+    color: white !important;
+    background-color: #3b5998;
+}
+</style>
+</head>
+<body>
+<div th:if="${message != null}" class="alert alert-info" th:utext="${message}">message</div>
+
+
+<div th:if="${error != null}" class="alert alert-danger" th:utext="${session[SPRING_SECURITY_LAST_EXCEPTION]}">error</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card border-0 shadow rounded-3 my-5">
+                <div class="card-body p-4 p-sm-5">
+
+                    <div class="sidebar-brand-icon text-center">
+                        <!-- <i class="fas fa-laugh-wink"></i> -->
+                        <i class="fas fa-3x fa-database"></i>
+                        <br/>
+                    </div>
+                    <h3 class="sidebar-brand-text mx-3 text-center">Hackathon</h3>
+
+                    <hr/>
+
+                    <h5 class="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
+                    <form name='f' action="login" method='POST' onsubmit="return validate();">
+                        <div class="form-floating mb-3">
+
+                            <input type='text' name='username' value='' class="form-control" id="username" placeholder="eraider@ttu.edu">
+                            <label for="username" th:utext="#{label.form.loginEmail}">Email address</label>
+
+
+                        </div>
+                        <div class="form-floating mb-3">
+
+                            <input type='password' name='password' class="form-control form-control-user" id="password" placeholder="Password">
+                            <label for="password" th:utext="#{label.form.loginPass}">Password</label>
+                        </div>
+
+
+
+<!--                        <div class="form-check mb-3">-->
+<!--                            <input class="form-check-input" type="checkbox" name="remember-me" value="" id="remember-me">-->
+<!--                            <label class="form-check-label" for="remember-me" th:utext="#{label.form.rememberMe}">-->
+<!--                                Remember password-->
+<!--                            </label>-->
+<!--                        </div>-->
+
+
+
+<!--                        <div class="form-floating mb-3">-->
+<!--                                <a class="link-danger" th:href="@{/forgetPassword.html}" th:utext="#{message.resetPassword}">reset</a>-->
+
+<!--                        </div>-->
+
+
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-login text-uppercase fw-bold" name="submit" type="submit" th:value="#{label.form.submit}">Sign in</button>
+
+
+                        </div>
+                        <hr class="my-4">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--        </div>-->
+<!--    </div>-->
+</body>
+
+</html>
