@@ -40,7 +40,7 @@ Next, you'll need to create a .env file in the root directory of the project. Th
 
 There is an example .env included on the repository named .env.example, you use that too, just rename it. Replace yourpassword and yourrootpassword with secure passwords of your choice. Do not commit this file to version control to keep your secrets safe.
 
-# Example .env file content
+### Example .env file content
 ```
 DB_HOST=localhost
 DB_NAME=database_hackathon
