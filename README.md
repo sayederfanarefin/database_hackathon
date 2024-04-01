@@ -2,7 +2,7 @@
 #### Integrating Hackathons in Computer Science Education for Real-World Teamwork and Problem-Solving Skills
 
 ![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)
-[![build status](https://gitlab.com/sayederfanarefin/database_hackathon-2/badges/main/pipeline.svg)](https://gitlab.com/sayederfanarefin/database_hackathon-2/-/pipelines)
+[![build status](https://gitlab.com/sayederfanarefin/database_hackathon/badges/main/pipeline.svg)](https://gitlab.com/sayederfanarefin/database_hackathon/-/pipelines)
 
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 
