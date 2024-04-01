@@ -39,7 +39,7 @@ package-prod:
     
   script:
     - docker build -t abcd .
-    - docker tag abcd sayederfanarefin/database-hackathon:atest
+    - docker tag abcd sayederfanarefin/database-hackathon:latest
     - docker push sayederfanarefin/database-hackathon:latest
 
   only:
