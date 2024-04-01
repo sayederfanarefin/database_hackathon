@@ -10,11 +10,6 @@ stages:
 build-prod:
   image: maven:3-jdk-8
   stage: build
-#  before_script:
-#    - sed -i "/spring.datasource.password=/c\spring.datasource.password=${DB_PASSWORD_PROD}" src/main/resources/application.properties
-#    - sed -i "/spring.datasource.username=/c\spring.datasource.username=${DB_USER_PROD}" src/main/resources/application.properties
-#    - sed -i "/spring.datasource.url=/c\spring.datasource.url=${DB_DATASOURCE_URL_PROD}" src/main/resources/application.properties
-#    - sed -i "/public static final String DB_URL=/c\public static final String DB_URL=${DB_DATASOURCE_URL_PROD_just}" src/main/java/com/databasecourse/erfan/Constants.java
 
   script:
     - "mvn clean"
@@ -35,7 +30,6 @@ package-prod:
   stage: package
   variables:
     DOCKER_DRIVER: overlay
-  #    DOCKER_HOST: tcp://docker:2375
 
   services:
     - docker:18.09.7-dind
@@ -45,32 +39,9 @@ package-prod:
     
   script:
     - docker build -t abcd .
-    - docker tag abcd erfanarefin/database-hackathon:latest
-    - docker push erfanarefin/database-hackathon:latest
+    - docker tag abcd sayederfanarefin/database-hackathon:atest
+    - docker push sayederfanarefin/database-hackathon:latest
 
   only:
     - main
 
-
-#
-#deploy-prod:
-#  stage: deploy
-#  when: on_success
-#  image: ubuntu:22.10
-#
-#
-#  before_script:
-#    - apt update -y
-#    - apt upgrade -y
-#    - apt install openssh-client -y
-#    - mkdir -p ~/.ssh
-#    - echo "$SSH_PROD_PRIVATE_KEY" > ~/.ssh/id_rsa
-#    - chmod 600 ~/.ssh/id_rsa
-#    - eval "$(ssh-agent -s)"
-#    - ssh-add <(echo "$SSH_PROD_PRIVATE_KEY")
-#    - ssh-keyscan -H ${PROD_IP} >> ~/.ssh/known_hosts
-#  script:
-#    - ssh root@${PROD_IP} "sudo docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}; cd /var/www/rest-api/; sudo chmod +x ./deployment-prod.sh; sudo ./deployment-prod.sh"
-#
-#  only:
-#    - main
