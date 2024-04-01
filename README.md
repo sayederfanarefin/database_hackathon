@@ -53,7 +53,7 @@ DB_ROOT_PASSWORD=yourrootpassword
 Pull the latest Docker image from Docker Hub:
 
 ```
-docker pull erfanarefin/database-hackathon:latest
+docker pull sayederfanarefin/database-hackathon:latest
 ```
 
 ### Step 4: Start the Application
