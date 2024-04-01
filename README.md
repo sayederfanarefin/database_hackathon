@@ -9,8 +9,7 @@
 <img src="image.webp" alt="Hackathon" width="150">
 
 ## Description
-
-Run your own database hackathon!
+Run your own instance of the database hackathon using Docker!
 
 ## Authors
 - Sayed Erfan Arefin
