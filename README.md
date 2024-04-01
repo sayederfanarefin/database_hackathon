@@ -13,7 +13,6 @@
 Run your own database hackathon!
 
 ## Authors
-
 - Sayed Erfan Arefin
 - Abdul Serwadda
 
