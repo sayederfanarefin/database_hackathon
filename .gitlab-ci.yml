@@ -3,17 +3,14 @@ image: docker:latest
 services:
   - docker:dind
 
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_HOST: tcp://docker:2375/
+
 stages:
   - build
   - package
-
-variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://docker:2375/
-  DOCKER_TLS_CERTDIR: ""
-
-before_script:
-  - docker info
 
 build-prod:
   image: maven:3-jdk-8
@@ -36,6 +33,7 @@ package-prod:
   services:
     - docker:18.09.7-dind
   before_script:
+    - docker info
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
     - docker build -t abcd .
