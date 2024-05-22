@@ -1,4 +1,5 @@
 image: docker:latest
+
 services:
   - docker:dind
 
@@ -6,16 +7,21 @@ stages:
   - build
   - package
 
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - docker info
 
 build-prod:
   image: maven:3-jdk-8
   stage: build
-
   script:
-    - "mvn clean"
-    - "mvn compile"
-    - "mvn package"
-
+    - mvn clean
+    - mvn compile
+    - mvn package
   artifacts:
     paths:
       - target/*.war
@@ -24,24 +30,16 @@ build-prod:
   only:
     - main
 
-
 package-prod:
   image: docker:18.09.7
   stage: package
-  variables:
-    DOCKER_DRIVER: overlay
-
   services:
     - docker:18.09.7-dind
-
   before_script:
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    
   script:
     - docker build -t abcd .
     - docker tag abcd sayederfanarefin/database-hackathon:latest
     - docker push sayederfanarefin/database-hackathon:latest
-
   only:
     - main
-
