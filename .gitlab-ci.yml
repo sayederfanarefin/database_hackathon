@@ -33,7 +33,7 @@ package-prod:
     - docker:23.0.2-alpine3.17
   before_script:
     - docker --version
-    - until docker info; do sleep 1; done
+    # - until docker info; do sleep 1; done
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   script:
     - docker build -t abcd .
