@@ -28,10 +28,10 @@ build-prod:
     - main
 
 package-prod:
-  image: docker:18.09.7
+  image: docker:24.0.6
   stage: package
   services:
-    - docker:18.09.7-dind
+    - docker:24.0.6-dind
   before_script:
     - docker info
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
