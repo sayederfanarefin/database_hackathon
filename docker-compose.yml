@@ -10,7 +10,7 @@ services:
       - /var/www/html/upload-dir:/upload-dir
       - /var/www/html/upload-dir-admin:/upload-dir-admin
     environment:
-      DB_HOST: db
+      DB_HOST: ${DB_HOST}
       DB_PORT: 3306
       DB_NAME: ${DB_NAME}
       DB_USERNAME: ${DB_USERNAME}
