@@ -27,10 +27,13 @@ build-prod:
     - main
 
 package-prod:
-  image: docker:23.0.2-alpine3.17
+  image: 
+    name: docker:stable
   stage: package
   services:
-    - docker:23.0.2-alpine3.17
+  - name: docker:dind
+    entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
+
   before_script:
     - docker --version
     # - until docker info; do sleep 1; done
