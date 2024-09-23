@@ -40,11 +40,27 @@ There is an example .env included on the repository named .env.example, you use 
 
 ### Example .env file content
 ```
-DB_HOST=localhost
+# Change all the values here please before use.
+
+DB_HOST=db
 DB_NAME=database_hackathon
-DB_USERNAME=root
-DB_PASSWORD=yourpassword
-DB_ROOT_PASSWORD=yourrootpassword
+DB_USERNAME=rootx
+DB_PASSWORD=2243
+DB_ROOT_PASSWORD=2243
+
+# User admin credentials
+ADMIN_USERNAME=user_admin
+ADMIN_EMAIL=user@admin
+ADMIN_FIRSTNAME=User
+ADMIN_LASTNAME=Admin
+ADMIN_PASSWORD=1234
+
+# Regular user credentials
+USER_USERNAME=user
+USER_EMAIL=erfanjordison@gmail.com
+USER_FIRSTNAME=User
+USER_LASTNAME=One
+USER_PASSWORD=1234
 ```
 
 ### Step 3: Pull the Docker Image (Optional)
