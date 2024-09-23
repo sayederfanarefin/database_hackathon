@@ -6,7 +6,7 @@
 
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 
-<img src="image.webp" alt="Hackathon" width="150">
+<img src="images/image.webp" alt="Hackathon" width="150">
 
 ## Description
 Run your own instance of the database hackathon using Docker!
@@ -75,9 +75,35 @@ For stopping and removing containers, networks, and the default volumes attached
 docker-compose down -v
 ```
 
+## Default Credentials 
+
+- Stored in .env file
+- Change all the values of .env file before use
+- Or participants can change the grades
+
+
+
 ## Entity Diagram
 
-<img src="entityManagerFactory(EntityManagerFactoryBuilder).png" alt="Entity Diagram" width="350">
+<img src="images/entityManagerFactory(EntityManagerFactoryBuilder).png" alt="Entity Diagram" width="350">
+
+
+
+## Use Case Diagram
+<img src="images/use-case.drawio.png" alt="Use Case Diagram" width="450">
+
+
+## Supporting Flow Diagrams
+
+### Task creation flow of a question
+<img src="images/hackathon_task_admin_creation.drawio.png" alt="Hackathon Task Admin Creation" width="450">
+
+
+### Grading scenario of a question
+<img src="images/flow.png" alt="Grading Scenario" width="450">
+
+
+
 
 ## How to Cite
 

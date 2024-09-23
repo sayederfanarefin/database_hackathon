@@ -45,6 +45,39 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+
+    @Value("${ADMIN_USERNAME}")
+    private String adminUsername;
+
+    @Value("${ADMIN_EMAIL}")
+    private String adminEmail;
+
+    @Value("${ADMIN_FIRSTNAME}")
+    private String adminFirstName;
+
+    @Value("${ADMIN_LASTNAME}")
+    private String adminLastName;
+
+    @Value("${ADMIN_PASSWORD}")
+    private String adminPassword;
+
+    @Value("${USER_USERNAME}")
+    private String userUsername;
+
+    @Value("${USER_EMAIL}")
+    private String userEmail;
+
+    @Value("${USER_FIRSTNAME}")
+    private String userFirstName;
+
+    @Value("${USER_LASTNAME}")
+    private String userLastName;
+
+    @Value("${USER_PASSWORD}")
+    private String userPassword;
+
+
     // API
 
     @Override
@@ -67,8 +100,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 
         // == create initial user
-        createUserIfNotFound("user_admin", "init", "user@admin", "User", "Admin", "1234", new ArrayList<>(Collections.singletonList(adminRole)), Constants.USER_DB_NAME_PREFIX + "admin");
-        createUserIfNotFound("user", "init","erfanjordison@gmail.com", "User", "One", "1234", new ArrayList<>(Collections.singletonList(userRole)), Constants.USER_DB_NAME_PREFIX + "user1");
+        // createUserIfNotFound("user_admin", "init", "user@admin", "User", "Admin", "1234", new ArrayList<>(Collections.singletonList(adminRole)), Constants.USER_DB_NAME_PREFIX + "admin");
+        // createUserIfNotFound("user", "init","erfanjordison@gmail.com", "User", "One", "1234", new ArrayList<>(Collections.singletonList(userRole)), Constants.USER_DB_NAME_PREFIX + "user1");
+
+        createUserIfNotFound(adminUsername, "init", adminEmail, adminFirstName, adminLastName, adminPassword, 
+                             new ArrayList<>(Collections.singletonList(adminRole)), Constants.USER_DB_NAME_PREFIX + "admin");
+
+        createUserIfNotFound(userUsername, "init", userEmail, userFirstName, userLastName, userPassword, 
+                             new ArrayList<>(Collections.singletonList(userRole)), Constants.USER_DB_NAME_PREFIX + "user1");
+
 
         runSQLService.runQuery(Constants.TEMP_DB_RESET_OPERATION_1);
         runSQLService.runQuery(Constants.TEMP_DB_RESET_OPERATION_2);
