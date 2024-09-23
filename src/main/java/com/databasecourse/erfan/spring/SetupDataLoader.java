@@ -14,6 +14,7 @@ import com.databasecourse.erfan.persistence.model.User;
 import com.databasecourse.erfan.service.RunSQLService;
 import com.databasecourse.erfan.web.util.CUSTOM_DB_USER_CREATOR;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;

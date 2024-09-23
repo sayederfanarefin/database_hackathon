@@ -90,17 +90,17 @@ docker-compose down -v
 
 
 ## Use Case Diagram
-<img src="images/use-case.drawio.png" alt="Use Case Diagram" width="450">
+<img src="images/use-case.drawio.png" alt="Use Case Diagram" width="400">
 
 
 ## Supporting Flow Diagrams
 
 ### Task creation flow of a question
-<img src="images/hackathon_task_admin_creation.drawio.png" alt="Hackathon Task Admin Creation" width="450">
+<img src="images/hackathon_task_admin_creation.drawio.png" alt="Hackathon Task Admin Creation" width="650">
 
 
 ### Grading scenario of a question
-<img src="images/flow.png" alt="Grading Scenario" width="450">
+<img src="images/flow.png" alt="Grading Scenario" width="650">
 
 
 
